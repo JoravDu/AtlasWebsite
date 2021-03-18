@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- JavaScript -->
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
     <title>Test</title>
 </head>
+
 <body>
     <div id="map"></div>
-    <script src="js/index.js"></script>
-
+    <div id="leaflet"></div>
     <style>
+        #leaflet,
         #map {
             height: 400px;
             width: 100%;
         }
     </style>
+
+    <!-- JavaScript -->
+    <!-- OpenLayers -->
+    <script src="js/index.js"></script>
+    <!-- Leaflet -->
+    <script src="js/leaflet/leaflet.js"></script>
+    <script src="data/geojson.js"></script>
 </body>
+
 </html>
