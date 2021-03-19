@@ -9,9 +9,15 @@
     <!-- CSS -->
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="">
+    <!-- Mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
     <!-- JavaScript -->
     <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- ChartJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!-- Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
 
     <title>Test</title>
 <link rel="stylesheet" href="/js.00a46daa.css"></head>
@@ -19,15 +25,23 @@
 <body>
     <div id="map"></div>
     <div id="leaflet-kaart"></div>
-    <style>#leaflet-kaart,
+    <canvas id="myChart"></canvas>
+    <div id="mapbox"></div>
+    <style>#mapbox,
+        #myChart,
+        #leaflet-kaart,
         #map {
             height: 400px;
             width: 100%;
         }</style>
 
     <!-- JavaScript -->
+    <!-- Mapbox -->
+    <script src="/mapbox.d4992ca8.js"></script>
+    <!-- ChartJS -->
+    <script src="/chartjs.938960d4.js"></script>
     <!-- Leaflet -->
-    <script src="/leaflet.40137b53.js"></script> 
+    <script src="/leaflet.40137b53.js" defer=""></script>
     <!-- Standaard JavaScript -->
     <script src="/js.00a46daa.js" defer=""></script>
 </body>

@@ -9,13 +9,19 @@
     <!-- CSS -->
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <!-- Mapbox -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
     <!-- JavaScript -->
     <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <!-- ChartJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!-- Mapbox -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
 
     <title>Test</title>
 </head>
@@ -23,7 +29,11 @@
 <body>
     <div id="map"></div>
     <div id="leaflet-kaart"></div>
+    <canvas id="myChart"></canvas>
+    <div id='mapbox'></div>
     <style>
+        #mapbox,
+        #myChart,
         #leaflet-kaart,
         #map {
             height: 400px;
@@ -32,8 +42,12 @@
     </style>
 
     <!-- JavaScript -->
+    <!-- Mapbox -->
+    <script src="js/mapbox/mapbox.js"></script>
+    <!-- ChartJS -->
+    <script src="js/chartjs/chartjs.js"></script>
     <!-- Leaflet -->
-    <script src="js/leaflet/leaflet.js"></script> 
+    <script src="js/leaflet/leaflet.js" defer></script>
     <!-- Standaard JavaScript -->
     <script src="js/index.js" defer></script>
 </body>
