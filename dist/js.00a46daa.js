@@ -93942,8 +93942,8 @@ var map = new _Map.default({
   }), vectorLayer],
   target: 'map',
   view: new _View.default({
-    center: [0, 0],
-    zoom: 2
+    center: [579076.15, 6862209.10],
+    zoom: 7
   })
 });
 },{"ol/ol.css":"node_modules/ol/ol.css","ol/geom/Circle":"node_modules/ol/geom/Circle.js","ol/Feature":"node_modules/ol/Feature.js","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -93974,7 +93974,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62667" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51844" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

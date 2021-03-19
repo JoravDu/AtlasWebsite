@@ -118,12 +118,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"js/mapbox/mapbox.js":[function(require,module,exports) {
-mapboxgl.accessToken = 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw';
-var map = new mapboxgl.Map({
-  container: 'mapbox',
-  style: 'mapbox://styles/mapbox/streets-v11',
-  center: [-74.5, 40],
-  zoom: 9
+window.addEventListener('load', function (event) {
+  mapboxgl.accessToken = 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw';
+  var map = new mapboxgl.Map({
+    container: 'mapbox',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-74.5, 40],
+    zoom: 9
+  });
 });
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -153,7 +155,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62667" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51844" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

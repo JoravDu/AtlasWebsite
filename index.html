@@ -23,25 +23,63 @@
     <!-- Mapbox -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
 
-    <title>Test</title>
+    <title>Webatlas</title>
 </head>
 
 <body>
+    <h1>Viewers</h1>
+    <h2>OpenLayers</h2>
     <div id="map"></div>
+    <h2>Leaflet</h2>
     <div id="leaflet-kaart"></div>
-    <canvas id="myChart"></canvas>
+    <h2>ArcGIS Embed</h2>
+    <iframe id="arcgis"
+        src="//aereshogeschool.maps.arcgis.com/apps/Embed/index.html?webmap=00d2f8e6cf79459ba1f2207207d549a8&extent=4.535,52.217,6.0512,52.7281&zoom=true&previewImage=false&scale=false&disable_scroll=true&theme=light"></iframe>
+    <h2>Mapbox</h2>
     <div id='mapbox'></div>
+    <h1>Tools</h1>
+    <h2>ChartJS</h2>
+    <div class="chart-container">
+        <canvas id="myChart" style="height: 100%; width: 100%;"></canvas>
+    </div>
+    <h2>Cesium</h2>
+    <iframe class="cesium" src="https://cesium.com/ion/stories/viewer/?id=3a03cb10-89dd-41b2-8e63-2cc7e91fb8d8"
+        frameborder="0" allow="fullscreen" allowfullscreen="true" mozallowfullscreen="true"
+        webkitallowfullscreen="true"></iframe>
+    <h2>Infogram</h2>
+    <div class="infogram">
+        <div class="infogram-embed" data-id="3c3626f3-564b-4753-ac52-a3e9f32c55e0" data-type="interactive"
+            data-title="Tour De France"></div>
+    </div>
+    <h2>Flourish</h2>
+    <div class="flourish-embed" data-src="visualisation/5617771" style="width: 100%; height: 400px;"></div>
+    <div class="raw">
+        <h2>RAWgraphs</h2>
+        <img src="data/viz.svg" alt="">
+    </div>
     <style>
+        .cesium,
+        .chart-container,
+        .embed-container,
+        #arcgis,
         #mapbox,
-        #myChart,
         #leaflet-kaart,
         #map {
             height: 400px;
             width: 100%;
         }
+        .raw {
+            margin-top: 300px;
+            height: 500px;
+            width: 100%;
+        }
     </style>
 
     <!-- JavaScript -->
+    <!-- Flourish -->
+    <script src="https://public.flourish.studio/resources/embed.js" defer></script>
+    <!-- Infogram -->
+    <script src="js/infogram/infogram.js" defer></script>
     <!-- Mapbox -->
     <script src="js/mapbox/mapbox.js" defer></script>
     <!-- ChartJS -->
