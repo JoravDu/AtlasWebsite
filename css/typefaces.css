@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Montserrat&display=swap');
+* {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+/* LEFT ALIGN */
+
+.xxl-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 64px;
+    line-height: 72px;
+}
+
+.xl-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 56px;
+    line-height: 64px;
+}
+
+.l-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    line-height: 56px;
+}
+
+.m-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    line-height: 44px;
+}
+
+.s-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    line-height: 36px;
+}
+
+/* CENTER ALIGN */
+
+.xxl-header-c {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 64px;
+    line-height: 72px;
+    text-align: center;
+}
+
+.xl-header-c {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 56px;
+    line-height: 64px;
+    text-align: center;
+}
+
+.l-header-c {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    line-height: 56px;
+    text-align: center;
+}
+
+.m-header-c {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    line-height: 44px;
+    text-align: center;
+}
+
+.s-header-c {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    line-height: 36px;
+    text-align: center;
+}
+
+/* CENTER RIGHT */
+
+.xxl-header-r {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 64px;
+    line-height: 72px;
+    text-align: right;
+}
+
+.xl-header-r {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 56px;
+    line-height: 64px;
+    text-align: right;
+}
+
+.l-header-r {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    line-height: 56px;
+    text-align: right;
+}
+
+.m-header-r {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    line-height: 44px;
+    text-align: right;
+}
+
+.s-header-r {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    line-height: 36px;
+    text-align: right;
+}
+
+#xxxl {
+    font-size: 100px;
+    line-height: 68px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+}
+
+.body-l {
+    font-size: 18px;
+    line-height: 36px;
+    text-align: justify;
+}
+
+.body-m {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: justify;
+}
+
+.body-s {
+    font-size: 14px;
+    line-height: 22px;
+    text-align: justify;
+}
+
+.body-xs {
+    font-size: 12px;
+    line-height: 18px;
+}

@@ -1,93 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- CSS -->
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <!-- Mapbox -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
-    <!-- JavaScript -->
-    <!-- Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-    <!-- ChartJS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <!-- Mapbox -->
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
-
-    <title>Webatlas</title>
+    <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/typefaces.css">
+    <title>W.Atlas</title>
 </head>
 
 <body>
-    <h1>Viewers</h1>
-    <h2>OpenLayers</h2>
-    <div id="map"></div>
-    <h2>Leaflet</h2>
-    <div id="leaflet-kaart"></div>
-    <h2>ArcGIS Embed</h2>
-    <iframe id="arcgis"
-        src="//aereshogeschool.maps.arcgis.com/apps/Embed/index.html?webmap=00d2f8e6cf79459ba1f2207207d549a8&extent=4.535,52.217,6.0512,52.7281&zoom=true&previewImage=false&scale=false&disable_scroll=true&theme=light"></iframe>
-    <h2>Mapbox</h2>
-    <div id='mapbox'></div>
-    <h1>Tools</h1>
-    <h2>ChartJS</h2>
-    <div class="chart-container">
-        <canvas id="myChart" style="height: 100%; width: 100%;"></canvas>
+    <div id="navbar">
+        <a href="index.html"><img class="logo" src="" alt=""></a>
+        <a href="#">Home</a>
+        <a href="#">Hoi</a>
+        <a href="#">Hoi</a>
     </div>
-    <h2>Cesium</h2>
-    <iframe class="cesium" src="https://cesium.com/ion/stories/viewer/?id=3a03cb10-89dd-41b2-8e63-2cc7e91fb8d8"
-        frameborder="0" allow="fullscreen" allowfullscreen="true" mozallowfullscreen="true"
-        webkitallowfullscreen="true"></iframe>
-    <h2>Infogram</h2>
-    <div class="infogram">
-        <div class="infogram-embed" data-id="3c3626f3-564b-4753-ac52-a3e9f32c55e0" data-type="interactive"
-            data-title="Tour De France"></div>
+    <div class="new-grid">
+        <div class="one-one">
+            <h1 class="xxl-header" id="xxxl">WebAtlas</h1>
+        </div>
+        <div class="two-two">
+            <h1 class="m-header">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h1>
+            <p class="body-m">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, accusamus nisi consequuntur, velit
+                quidem sint explicabo ipsum nesciunt a nemo incidunt quasi vero consequatur ipsa molestias. Tempore
+                dolore animi facilis deleniti perspiciatis, laboriosam laborum similique quasi nam consectetur nostrum
+                sed.
+            </p>
+            <br>
+            <p class="body-m">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis, numquam dignissimos? Ex iste,
+                voluptates deserunt corrupti inventore facere eum molestias quibusdam numquam expedita maiores possimus
+                sint reprehenderit et asperiores at!
+            </p>
+        </div>
+        <div class="three-three">
+            <h1 class="m-header">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h1>
+            <p class="body-m">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, accusamus nisi consequuntur, velit
+                quidem sint explicabo ipsum nesciunt a nemo incidunt quasi vero consequatur ipsa molestias. Tempore
+                dolore animi facilis deleniti perspiciatis, laboriosam laborum similique quasi nam consectetur nostrum
+                sed.
+            </p>
+            <br>
+            <p class="body-m">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis, numquam dignissimos? Ex iste,
+                voluptates deserunt corrupti inventore facere eum molestias quibusdam numquam expedita maiores possimus
+                sint reprehenderit et asperiores at!
+            </p>
+        </div>
     </div>
-    <h2>Flourish</h2>
-    <div class="flourish-embed" data-src="visualisation/5617771" style="width: 100%; height: 400px;"></div>
-    <div class="raw">
-        <h2>RAWgraphs</h2>
-        <img src="data/viz.svg" alt="">
-    </div>
-    <style>
-        .cesium,
-        .chart-container,
-        .embed-container,
-        #arcgis,
-        #mapbox,
-        #leaflet-kaart,
-        #map {
-            height: 400px;
-            width: 100%;
-        }
-        .raw {
-            margin-top: 300px;
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-
-    <!-- JavaScript -->
-    <!-- Flourish -->
-    <script src="https://public.flourish.studio/resources/embed.js" defer></script>
-    <!-- Infogram -->
-    <script src="js/infogram/infogram.js" defer></script>
-    <!-- Mapbox -->
-    <script src="js/mapbox/mapbox.js" defer></script>
-    <!-- ChartJS -->
-    <script src="js/chartjs/chartjs.js" defer></script>
-    <!-- Leaflet -->
-    <script src="js/leaflet/leaflet.js" defer></script>
-    <!-- Standaard JavaScript -->
-    <script src="js/index.js" defer></script>
+    <script src="js/sticky.js"></script>
 </body>
 
 </html>
