@@ -7,6 +7,10 @@
     line-height: 35px;
 }
 
+#navbar .active{
+    color: blue;
+}
+
 #navbar a {
     float: left;
     display: block;

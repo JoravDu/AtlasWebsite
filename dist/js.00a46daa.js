@@ -93940,7 +93940,7 @@ var map = new _Map.default({
   layers: [new _layer.Tile({
     source: new _source.OSM()
   }), vectorLayer],
-  target: 'map',
+  target: 'olmap',
   view: new _View.default({
     center: [579076.15, 6862209.10],
     zoom: 7
@@ -93974,7 +93974,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51844" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58558" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

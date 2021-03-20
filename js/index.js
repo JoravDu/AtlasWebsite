@@ -48,7 +48,7 @@ var map = new Map({
       source: new OSM(),
     }),
     vectorLayer],
-  target: 'map',
+  target: 'olmap',
   view: new View({
     center: [579076.15, 6862209.10],
     zoom: 7,

@@ -1,3 +1,4 @@
+/* Homepage */
 .new-grid {
     width: 100%;
     display: grid;
@@ -15,7 +16,6 @@
     text-align: center;
     position: relative;
     overflow: hidden;
-    /* background-image: url(https://images.squarespace-cdn.com/content/v1/588a9d4b9f7456789fbca780/1490055555282-UAEKC6B0H6AVGIZCZW28/ke17ZwdGBToddI8pDm48kBeMze4I1AIWEK9AlXgaOSV7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0iCDJfub3m665p7PHnGGFOcqH2CCW29TtrpVUi5wpUo6F6b_xxEjfFNKg3vbijHmoA/Bitter_Melon?format=1500w); */
     background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Hendrick_Avercamp_-_Winterlandschap_met_ijsvermaak.jpg/1200px-Hendrick_Avercamp_-_Winterlandschap_met_ijsvermaak.jpg);
     background-color: #fbfbfb;
     background-repeat: no-repeat;
@@ -37,6 +37,30 @@
     grid-column: 2;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Pagina 2 */
+
+.p2-box {
+    height: 800px;
+    width: 100%;
+}
+
+.p2-map {
+    width: 70%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.p2-text p{
+    width: 60%;
+    padding: 2.5% 20%;
+}
+
+/* Javascript */
+#olmap {
+    height: 600px;
+    width: 100%;
 }
 
 /*# sourceMappingURL=/master.e2f719f2.css.map */
