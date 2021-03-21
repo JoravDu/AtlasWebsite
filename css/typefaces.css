@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Montserrat&display=swap');
 
-* {
+div p {
     font-family: 'Lexend Deca', sans-serif;
     line-height: 26px;
 }

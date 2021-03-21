@@ -16,7 +16,7 @@
     text-align: center;
     position: relative;
     overflow: hidden;
-    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Hendrick_Avercamp_-_Winterlandschap_met_ijsvermaak.jpg/1200px-Hendrick_Avercamp_-_Winterlandschap_met_ijsvermaak.jpg);
+    background-image: url(https://images.unsplash.com/photo-1564844583114-99e76a70fd1d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80);
     background-color: #fbfbfb;
     background-repeat: no-repeat;
     background-size: cover;
@@ -40,6 +40,14 @@
 }
 
 /* Pagina 2 */
+
+.invc-blck-50 {
+    height: 50px;
+}
+
+.invc-blck-60 {
+    height: 60px;
+}
 
 .p2-box {
     height: 800px;

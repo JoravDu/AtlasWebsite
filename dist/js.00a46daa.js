@@ -190,37 +190,7 @@ module.exports = reloadCSS;
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/ol/geom/GeometryType.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/**
- * @module ol/geom/GeometryType
- */
-
-/**
- * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
- * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
- * `'GeometryCollection'`, `'Circle'`.
- * @enum {string}
- */
-var _default = {
-  POINT: 'Point',
-  LINE_STRING: 'LineString',
-  LINEAR_RING: 'LinearRing',
-  POLYGON: 'Polygon',
-  MULTI_POINT: 'MultiPoint',
-  MULTI_LINE_STRING: 'MultiLineString',
-  MULTI_POLYGON: 'MultiPolygon',
-  GEOMETRY_COLLECTION: 'GeometryCollection',
-  CIRCLE: 'Circle'
-};
-exports.default = _default;
-},{}],"node_modules/ol/events/Event.js":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/ol/events/Event.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1830,77 +1800,7 @@ function getChangeEventType(key) {
 
 var _default = BaseObject;
 exports.default = _default;
-},{"./events/Event.js":"node_modules/ol/events/Event.js","./ObjectEventType.js":"node_modules/ol/ObjectEventType.js","./Observable.js":"node_modules/ol/Observable.js","./obj.js":"node_modules/ol/obj.js","./util.js":"node_modules/ol/util.js"}],"node_modules/ol/proj/Units.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.METERS_PER_UNIT = void 0;
-
-/**
- * @module ol/proj/Units
- */
-
-/**
- * Projection units: `'degrees'`, `'ft'`, `'m'`, `'pixels'`, `'tile-pixels'` or
- * `'us-ft'`.
- * @enum {string}
- */
-var Units = {
-  /**
-   * Degrees
-   * @api
-   */
-  DEGREES: 'degrees',
-
-  /**
-   * Feet
-   * @api
-   */
-  FEET: 'ft',
-
-  /**
-   * Meters
-   * @api
-   */
-  METERS: 'm',
-
-  /**
-   * Pixels
-   * @api
-   */
-  PIXELS: 'pixels',
-
-  /**
-   * Tile Pixels
-   * @api
-   */
-  TILE_PIXELS: 'tile-pixels',
-
-  /**
-   * US Feet
-   * @api
-   */
-  USFEET: 'us-ft'
-};
-/**
- * Meters per unit lookup table.
- * @const
- * @type {Object<Units, number>}
- * @api
- */
-
-var METERS_PER_UNIT = {}; // use the radius of the Normal sphere
-
-exports.METERS_PER_UNIT = METERS_PER_UNIT;
-METERS_PER_UNIT[Units.DEGREES] = 2 * Math.PI * 6370997 / 360;
-METERS_PER_UNIT[Units.FEET] = 0.3048;
-METERS_PER_UNIT[Units.METERS] = 1;
-METERS_PER_UNIT[Units.USFEET] = 1200 / 3937;
-var _default = Units;
-exports.default = _default;
-},{}],"node_modules/ol/AssertionError.js":[function(require,module,exports) {
+},{"./events/Event.js":"node_modules/ol/events/Event.js","./ObjectEventType.js":"node_modules/ol/ObjectEventType.js","./Observable.js":"node_modules/ol/Observable.js","./obj.js":"node_modules/ol/obj.js","./util.js":"node_modules/ol/util.js"}],"node_modules/ol/AssertionError.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2008,7 +1908,464 @@ function assert(assertion, errorCode) {
     throw new _AssertionError.default(errorCode);
   }
 }
-},{"./AssertionError.js":"node_modules/ol/AssertionError.js"}],"node_modules/ol/transform.js":[function(require,module,exports) {
+},{"./AssertionError.js":"node_modules/ol/AssertionError.js"}],"node_modules/ol/Feature.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createStyleFunction = createStyleFunction;
+exports.default = void 0;
+
+var _Object = _interopRequireWildcard(require("./Object.js"));
+
+var _EventType = _interopRequireDefault(require("./events/EventType.js"));
+
+var _asserts = require("./asserts.js");
+
+var _events = require("./events.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var extendStatics = function (d, b) {
+    extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+    };
+
+    return extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+/**
+ * @module ol/Feature
+ */
+
+
+/**
+ * @typedef {typeof Feature|typeof import("./render/Feature.js").default} FeatureClass
+ */
+
+/**
+ * @typedef {Feature|import("./render/Feature.js").default} FeatureLike
+ */
+
+/**
+ * @classdesc
+ * A vector object for geographic features with a geometry and other
+ * attribute properties, similar to the features in vector file formats like
+ * GeoJSON.
+ *
+ * Features can be styled individually with `setStyle`; otherwise they use the
+ * style of their vector layer.
+ *
+ * Note that attribute properties are set as {@link module:ol/Object} properties on
+ * the feature object, so they are observable, and have get/set accessors.
+ *
+ * Typically, a feature has a single geometry property. You can set the
+ * geometry using the `setGeometry` method and get it with `getGeometry`.
+ * It is possible to store more than one geometry on a feature using attribute
+ * properties. By default, the geometry used for rendering is identified by
+ * the property name `geometry`. If you want to use another geometry property
+ * for rendering, use the `setGeometryName` method to change the attribute
+ * property associated with the geometry for the feature.  For example:
+ *
+ * ```js
+ *
+ * import Feature from 'ol/Feature';
+ * import Polygon from 'ol/geom/Polygon';
+ * import Point from 'ol/geom/Point';
+ *
+ * var feature = new Feature({
+ *   geometry: new Polygon(polyCoords),
+ *   labelPoint: new Point(labelCoords),
+ *   name: 'My Polygon'
+ * });
+ *
+ * // get the polygon geometry
+ * var poly = feature.getGeometry();
+ *
+ * // Render the feature as a point using the coordinates from labelPoint
+ * feature.setGeometryName('labelPoint');
+ *
+ * // get the point geometry
+ * var point = feature.getGeometry();
+ * ```
+ *
+ * @api
+ * @template {import("./geom/Geometry.js").default} Geometry
+ */
+var Feature =
+/** @class */
+function (_super) {
+  __extends(Feature, _super);
+  /**
+   * @param {Geometry|Object<string, *>=} opt_geometryOrProperties
+   *     You may pass a Geometry object directly, or an object literal containing
+   *     properties. If you pass an object literal, you may include a Geometry
+   *     associated with a `geometry` key.
+   */
+
+
+  function Feature(opt_geometryOrProperties) {
+    var _this = _super.call(this) || this;
+    /**
+     * @private
+     * @type {number|string|undefined}
+     */
+
+
+    _this.id_ = undefined;
+    /**
+     * @type {string}
+     * @private
+     */
+
+    _this.geometryName_ = 'geometry';
+    /**
+     * User provided style.
+     * @private
+     * @type {import("./style/Style.js").StyleLike}
+     */
+
+    _this.style_ = null;
+    /**
+     * @private
+     * @type {import("./style/Style.js").StyleFunction|undefined}
+     */
+
+    _this.styleFunction_ = undefined;
+    /**
+     * @private
+     * @type {?import("./events.js").EventsKey}
+     */
+
+    _this.geometryChangeKey_ = null;
+
+    _this.addEventListener((0, _Object.getChangeEventType)(_this.geometryName_), _this.handleGeometryChanged_);
+
+    if (opt_geometryOrProperties) {
+      if (typeof
+      /** @type {?} */
+      opt_geometryOrProperties.getSimplifiedGeometry === 'function') {
+        var geometry =
+        /** @type {Geometry} */
+        opt_geometryOrProperties;
+
+        _this.setGeometry(geometry);
+      } else {
+        /** @type {Object<string, *>} */
+        var properties = opt_geometryOrProperties;
+
+        _this.setProperties(properties);
+      }
+    }
+
+    return _this;
+  }
+  /**
+   * Clone this feature. If the original feature has a geometry it
+   * is also cloned. The feature id is not set in the clone.
+   * @return {Feature} The clone.
+   * @api
+   */
+
+
+  Feature.prototype.clone = function () {
+    var clone = new Feature(this.hasProperties() ? this.getProperties() : null);
+    clone.setGeometryName(this.getGeometryName());
+    var geometry = this.getGeometry();
+
+    if (geometry) {
+      clone.setGeometry(geometry.clone());
+    }
+
+    var style = this.getStyle();
+
+    if (style) {
+      clone.setStyle(style);
+    }
+
+    return clone;
+  };
+  /**
+   * Get the feature's default geometry.  A feature may have any number of named
+   * geometries.  The "default" geometry (the one that is rendered by default) is
+   * set when calling {@link module:ol/Feature~Feature#setGeometry}.
+   * @return {Geometry|undefined} The default geometry for the feature.
+   * @api
+   * @observable
+   */
+
+
+  Feature.prototype.getGeometry = function () {
+    return (
+      /** @type {Geometry|undefined} */
+      this.get(this.geometryName_)
+    );
+  };
+  /**
+   * Get the feature identifier.  This is a stable identifier for the feature and
+   * is either set when reading data from a remote source or set explicitly by
+   * calling {@link module:ol/Feature~Feature#setId}.
+   * @return {number|string|undefined} Id.
+   * @api
+   */
+
+
+  Feature.prototype.getId = function () {
+    return this.id_;
+  };
+  /**
+   * Get the name of the feature's default geometry.  By default, the default
+   * geometry is named `geometry`.
+   * @return {string} Get the property name associated with the default geometry
+   *     for this feature.
+   * @api
+   */
+
+
+  Feature.prototype.getGeometryName = function () {
+    return this.geometryName_;
+  };
+  /**
+   * Get the feature's style. Will return what was provided to the
+   * {@link module:ol/Feature~Feature#setStyle} method.
+   * @return {import("./style/Style.js").StyleLike|undefined} The feature style.
+   * @api
+   */
+
+
+  Feature.prototype.getStyle = function () {
+    return this.style_;
+  };
+  /**
+   * Get the feature's style function.
+   * @return {import("./style/Style.js").StyleFunction|undefined} Return a function
+   * representing the current style of this feature.
+   * @api
+   */
+
+
+  Feature.prototype.getStyleFunction = function () {
+    return this.styleFunction_;
+  };
+  /**
+   * @private
+   */
+
+
+  Feature.prototype.handleGeometryChange_ = function () {
+    this.changed();
+  };
+  /**
+   * @private
+   */
+
+
+  Feature.prototype.handleGeometryChanged_ = function () {
+    if (this.geometryChangeKey_) {
+      (0, _events.unlistenByKey)(this.geometryChangeKey_);
+      this.geometryChangeKey_ = null;
+    }
+
+    var geometry = this.getGeometry();
+
+    if (geometry) {
+      this.geometryChangeKey_ = (0, _events.listen)(geometry, _EventType.default.CHANGE, this.handleGeometryChange_, this);
+    }
+
+    this.changed();
+  };
+  /**
+   * Set the default geometry for the feature.  This will update the property
+   * with the name returned by {@link module:ol/Feature~Feature#getGeometryName}.
+   * @param {Geometry|undefined} geometry The new geometry.
+   * @api
+   * @observable
+   */
+
+
+  Feature.prototype.setGeometry = function (geometry) {
+    this.set(this.geometryName_, geometry);
+  };
+  /**
+   * Set the style for the feature to override the layer style.  This can be a
+   * single style object, an array of styles, or a function that takes a
+   * resolution and returns an array of styles. To unset the feature style, call
+   * `setStyle()` without arguments or a falsey value.
+   * @param {import("./style/Style.js").StyleLike=} opt_style Style for this feature.
+   * @api
+   * @fires module:ol/events/Event~BaseEvent#event:change
+   */
+
+
+  Feature.prototype.setStyle = function (opt_style) {
+    this.style_ = opt_style;
+    this.styleFunction_ = !opt_style ? undefined : createStyleFunction(opt_style);
+    this.changed();
+  };
+  /**
+   * Set the feature id.  The feature id is considered stable and may be used when
+   * requesting features or comparing identifiers returned from a remote source.
+   * The feature id can be used with the
+   * {@link module:ol/source/Vector~VectorSource#getFeatureById} method.
+   * @param {number|string|undefined} id The feature id.
+   * @api
+   * @fires module:ol/events/Event~BaseEvent#event:change
+   */
+
+
+  Feature.prototype.setId = function (id) {
+    this.id_ = id;
+    this.changed();
+  };
+  /**
+   * Set the property name to be used when getting the feature's default geometry.
+   * When calling {@link module:ol/Feature~Feature#getGeometry}, the value of the property with
+   * this name will be returned.
+   * @param {string} name The property name of the default geometry.
+   * @api
+   */
+
+
+  Feature.prototype.setGeometryName = function (name) {
+    this.removeEventListener((0, _Object.getChangeEventType)(this.geometryName_), this.handleGeometryChanged_);
+    this.geometryName_ = name;
+    this.addEventListener((0, _Object.getChangeEventType)(this.geometryName_), this.handleGeometryChanged_);
+    this.handleGeometryChanged_();
+  };
+
+  return Feature;
+}(_Object.default);
+/**
+ * Convert the provided object into a feature style function.  Functions passed
+ * through unchanged.  Arrays of Style or single style objects wrapped
+ * in a new feature style function.
+ * @param {!import("./style/Style.js").StyleFunction|!Array<import("./style/Style.js").default>|!import("./style/Style.js").default} obj
+ *     A feature style function, a single style, or an array of styles.
+ * @return {import("./style/Style.js").StyleFunction} A style function.
+ */
+
+
+function createStyleFunction(obj) {
+  if (typeof obj === 'function') {
+    return obj;
+  } else {
+    /**
+     * @type {Array<import("./style/Style.js").default>}
+     */
+    var styles_1;
+
+    if (Array.isArray(obj)) {
+      styles_1 = obj;
+    } else {
+      (0, _asserts.assert)(typeof
+      /** @type {?} */
+      obj.getZIndex === 'function', 41); // Expected an `import("./style/Style.js").Style` or an array of `import("./style/Style.js").Style`
+
+      var style =
+      /** @type {import("./style/Style.js").default} */
+      obj;
+      styles_1 = [style];
+    }
+
+    return function () {
+      return styles_1;
+    };
+  }
+}
+
+var _default = Feature;
+exports.default = _default;
+},{"./Object.js":"node_modules/ol/Object.js","./events/EventType.js":"node_modules/ol/events/EventType.js","./asserts.js":"node_modules/ol/asserts.js","./events.js":"node_modules/ol/events.js"}],"node_modules/ol/proj/Units.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.METERS_PER_UNIT = void 0;
+
+/**
+ * @module ol/proj/Units
+ */
+
+/**
+ * Projection units: `'degrees'`, `'ft'`, `'m'`, `'pixels'`, `'tile-pixels'` or
+ * `'us-ft'`.
+ * @enum {string}
+ */
+var Units = {
+  /**
+   * Degrees
+   * @api
+   */
+  DEGREES: 'degrees',
+
+  /**
+   * Feet
+   * @api
+   */
+  FEET: 'ft',
+
+  /**
+   * Meters
+   * @api
+   */
+  METERS: 'm',
+
+  /**
+   * Pixels
+   * @api
+   */
+  PIXELS: 'pixels',
+
+  /**
+   * Tile Pixels
+   * @api
+   */
+  TILE_PIXELS: 'tile-pixels',
+
+  /**
+   * US Feet
+   * @api
+   */
+  USFEET: 'us-ft'
+};
+/**
+ * Meters per unit lookup table.
+ * @const
+ * @type {Object<Units, number>}
+ * @api
+ */
+
+var METERS_PER_UNIT = {}; // use the radius of the Normal sphere
+
+exports.METERS_PER_UNIT = METERS_PER_UNIT;
+METERS_PER_UNIT[Units.DEGREES] = 2 * Math.PI * 6370997 / 360;
+METERS_PER_UNIT[Units.FEET] = 0.3048;
+METERS_PER_UNIT[Units.METERS] = 1;
+METERS_PER_UNIT[Units.USFEET] = 1200 / 3937;
+var _default = Units;
+exports.default = _default;
+},{}],"node_modules/ol/transform.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4280,7 +4637,37 @@ function get(sourceCode, destinationCode) {
 
   return transform;
 }
-},{"../obj.js":"node_modules/ol/obj.js"}],"node_modules/ol/sphere.js":[function(require,module,exports) {
+},{"../obj.js":"node_modules/ol/obj.js"}],"node_modules/ol/geom/GeometryType.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+ * @module ol/geom/GeometryType
+ */
+
+/**
+ * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
+ * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
+ * `'GeometryCollection'`, `'Circle'`.
+ * @enum {string}
+ */
+var _default = {
+  POINT: 'Point',
+  LINE_STRING: 'LineString',
+  LINEAR_RING: 'LinearRing',
+  POLYGON: 'Polygon',
+  MULTI_POINT: 'MultiPoint',
+  MULTI_LINE_STRING: 'MultiLineString',
+  MULTI_POLYGON: 'MultiPolygon',
+  GEOMETRY_COLLECTION: 'GeometryCollection',
+  CIRCLE: 'Circle'
+};
+exports.default = _default;
+},{}],"node_modules/ol/sphere.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6381,1266 +6768,7 @@ function (_super) {
 
 var _default = Geometry;
 exports.default = _default;
-},{"../Object.js":"node_modules/ol/Object.js","../proj/Units.js":"node_modules/ol/proj/Units.js","../util.js":"node_modules/ol/util.js","../transform.js":"node_modules/ol/transform.js","../extent.js":"node_modules/ol/extent.js","../proj.js":"node_modules/ol/proj.js","../functions.js":"node_modules/ol/functions.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/ol/geom/GeometryLayout.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/**
- * @module ol/geom/GeometryLayout
- */
-
-/**
- * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
- * or measure ('M') coordinate is available. Supported values are `'XY'`,
- * `'XYZ'`, `'XYM'`, `'XYZM'`.
- * @enum {string}
- */
-var _default = {
-  XY: 'XY',
-  XYZ: 'XYZ',
-  XYM: 'XYM',
-  XYZM: 'XYZM'
-};
-exports.default = _default;
-},{}],"node_modules/ol/geom/SimpleGeometry.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getStrideForLayout = getStrideForLayout;
-exports.transformGeom2D = transformGeom2D;
-exports.default = void 0;
-
-var _Geometry = _interopRequireDefault(require("./Geometry.js"));
-
-var _GeometryLayout = _interopRequireDefault(require("./GeometryLayout.js"));
-
-var _util = require("../util.js");
-
-var _extent = require("../extent.js");
-
-var _transform = require("./flat/transform.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-/**
- * @module ol/geom/SimpleGeometry
- */
-
-
-/**
- * @classdesc
- * Abstract base class; only used for creating subclasses; do not instantiate
- * in apps, as cannot be rendered.
- *
- * @abstract
- * @api
- */
-var SimpleGeometry =
-/** @class */
-function (_super) {
-  __extends(SimpleGeometry, _super);
-
-  function SimpleGeometry() {
-    var _this = _super.call(this) || this;
-    /**
-     * @protected
-     * @type {import("./GeometryLayout.js").default}
-     */
-
-
-    _this.layout = _GeometryLayout.default.XY;
-    /**
-     * @protected
-     * @type {number}
-     */
-
-    _this.stride = 2;
-    /**
-     * @protected
-     * @type {Array<number>}
-     */
-
-    _this.flatCoordinates = null;
-    return _this;
-  }
-  /**
-   * @param {import("../extent.js").Extent} extent Extent.
-   * @protected
-   * @return {import("../extent.js").Extent} extent Extent.
-   */
-
-
-  SimpleGeometry.prototype.computeExtent = function (extent) {
-    return (0, _extent.createOrUpdateFromFlatCoordinates)(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, extent);
-  };
-  /**
-   * @abstract
-   * @return {Array<*>} Coordinates.
-   */
-
-
-  SimpleGeometry.prototype.getCoordinates = function () {
-    return (0, _util.abstract)();
-  };
-  /**
-   * Return the first coordinate of the geometry.
-   * @return {import("../coordinate.js").Coordinate} First coordinate.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.getFirstCoordinate = function () {
-    return this.flatCoordinates.slice(0, this.stride);
-  };
-  /**
-   * @return {Array<number>} Flat coordinates.
-   */
-
-
-  SimpleGeometry.prototype.getFlatCoordinates = function () {
-    return this.flatCoordinates;
-  };
-  /**
-   * Return the last coordinate of the geometry.
-   * @return {import("../coordinate.js").Coordinate} Last point.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.getLastCoordinate = function () {
-    return this.flatCoordinates.slice(this.flatCoordinates.length - this.stride);
-  };
-  /**
-   * Return the {@link module:ol/geom/GeometryLayout layout} of the geometry.
-   * @return {import("./GeometryLayout.js").default} Layout.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.getLayout = function () {
-    return this.layout;
-  };
-  /**
-   * Create a simplified version of this geometry using the Douglas Peucker algorithm.
-   * @param {number} squaredTolerance Squared tolerance.
-   * @return {SimpleGeometry} Simplified geometry.
-   */
-
-
-  SimpleGeometry.prototype.getSimplifiedGeometry = function (squaredTolerance) {
-    if (this.simplifiedGeometryRevision !== this.getRevision()) {
-      this.simplifiedGeometryMaxMinSquaredTolerance = 0;
-      this.simplifiedGeometryRevision = this.getRevision();
-    } // If squaredTolerance is negative or if we know that simplification will not
-    // have any effect then just return this.
-
-
-    if (squaredTolerance < 0 || this.simplifiedGeometryMaxMinSquaredTolerance !== 0 && squaredTolerance <= this.simplifiedGeometryMaxMinSquaredTolerance) {
-      return this;
-    }
-
-    var simplifiedGeometry = this.getSimplifiedGeometryInternal(squaredTolerance);
-    var simplifiedFlatCoordinates = simplifiedGeometry.getFlatCoordinates();
-
-    if (simplifiedFlatCoordinates.length < this.flatCoordinates.length) {
-      return simplifiedGeometry;
-    } else {
-      // Simplification did not actually remove any coordinates.  We now know
-      // that any calls to getSimplifiedGeometry with a squaredTolerance less
-      // than or equal to the current squaredTolerance will also not have any
-      // effect.  This allows us to short circuit simplification (saving CPU
-      // cycles) and prevents the cache of simplified geometries from filling
-      // up with useless identical copies of this geometry (saving memory).
-      this.simplifiedGeometryMaxMinSquaredTolerance = squaredTolerance;
-      return this;
-    }
-  };
-  /**
-   * @param {number} squaredTolerance Squared tolerance.
-   * @return {SimpleGeometry} Simplified geometry.
-   * @protected
-   */
-
-
-  SimpleGeometry.prototype.getSimplifiedGeometryInternal = function (squaredTolerance) {
-    return this;
-  };
-  /**
-   * @return {number} Stride.
-   */
-
-
-  SimpleGeometry.prototype.getStride = function () {
-    return this.stride;
-  };
-  /**
-   * @param {import("./GeometryLayout.js").default} layout Layout.
-   * @param {Array<number>} flatCoordinates Flat coordinates.
-   */
-
-
-  SimpleGeometry.prototype.setFlatCoordinates = function (layout, flatCoordinates) {
-    this.stride = getStrideForLayout(layout);
-    this.layout = layout;
-    this.flatCoordinates = flatCoordinates;
-  };
-  /**
-   * @abstract
-   * @param {!Array<*>} coordinates Coordinates.
-   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
-   */
-
-
-  SimpleGeometry.prototype.setCoordinates = function (coordinates, opt_layout) {
-    (0, _util.abstract)();
-  };
-  /**
-   * @param {import("./GeometryLayout.js").default|undefined} layout Layout.
-   * @param {Array<*>} coordinates Coordinates.
-   * @param {number} nesting Nesting.
-   * @protected
-   */
-
-
-  SimpleGeometry.prototype.setLayout = function (layout, coordinates, nesting) {
-    /** @type {number} */
-    var stride;
-
-    if (layout) {
-      stride = getStrideForLayout(layout);
-    } else {
-      for (var i = 0; i < nesting; ++i) {
-        if (coordinates.length === 0) {
-          this.layout = _GeometryLayout.default.XY;
-          this.stride = 2;
-          return;
-        } else {
-          coordinates =
-          /** @type {Array} */
-          coordinates[0];
-        }
-      }
-
-      stride = coordinates.length;
-      layout = getLayoutForStride(stride);
-    }
-
-    this.layout = layout;
-    this.stride = stride;
-  };
-  /**
-   * Apply a transform function to the coordinates of the geometry.
-   * The geometry is modified in place.
-   * If you do not want the geometry modified in place, first `clone()` it and
-   * then use this function on the clone.
-   * @param {import("../proj.js").TransformFunction} transformFn Transform function.
-   * Called with a flat array of geometry coordinates.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.applyTransform = function (transformFn) {
-    if (this.flatCoordinates) {
-      transformFn(this.flatCoordinates, this.flatCoordinates, this.stride);
-      this.changed();
-    }
-  };
-  /**
-   * Rotate the geometry around a given coordinate. This modifies the geometry
-   * coordinates in place.
-   * @param {number} angle Rotation angle in counter-clockwise radians.
-   * @param {import("../coordinate.js").Coordinate} anchor The rotation center.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.rotate = function (angle, anchor) {
-    var flatCoordinates = this.getFlatCoordinates();
-
-    if (flatCoordinates) {
-      var stride = this.getStride();
-      (0, _transform.rotate)(flatCoordinates, 0, flatCoordinates.length, stride, angle, anchor, flatCoordinates);
-      this.changed();
-    }
-  };
-  /**
-   * Scale the geometry (with an optional origin).  This modifies the geometry
-   * coordinates in place.
-   * @param {number} sx The scaling factor in the x-direction.
-   * @param {number=} opt_sy The scaling factor in the y-direction (defaults to sx).
-   * @param {import("../coordinate.js").Coordinate=} opt_anchor The scale origin (defaults to the center
-   *     of the geometry extent).
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.scale = function (sx, opt_sy, opt_anchor) {
-    var sy = opt_sy;
-
-    if (sy === undefined) {
-      sy = sx;
-    }
-
-    var anchor = opt_anchor;
-
-    if (!anchor) {
-      anchor = (0, _extent.getCenter)(this.getExtent());
-    }
-
-    var flatCoordinates = this.getFlatCoordinates();
-
-    if (flatCoordinates) {
-      var stride = this.getStride();
-      (0, _transform.scale)(flatCoordinates, 0, flatCoordinates.length, stride, sx, sy, anchor, flatCoordinates);
-      this.changed();
-    }
-  };
-  /**
-   * Translate the geometry.  This modifies the geometry coordinates in place.  If
-   * instead you want a new geometry, first `clone()` this geometry.
-   * @param {number} deltaX Delta X.
-   * @param {number} deltaY Delta Y.
-   * @api
-   */
-
-
-  SimpleGeometry.prototype.translate = function (deltaX, deltaY) {
-    var flatCoordinates = this.getFlatCoordinates();
-
-    if (flatCoordinates) {
-      var stride = this.getStride();
-      (0, _transform.translate)(flatCoordinates, 0, flatCoordinates.length, stride, deltaX, deltaY, flatCoordinates);
-      this.changed();
-    }
-  };
-
-  return SimpleGeometry;
-}(_Geometry.default);
-/**
- * @param {number} stride Stride.
- * @return {import("./GeometryLayout.js").default} layout Layout.
- */
-
-
-function getLayoutForStride(stride) {
-  var layout;
-
-  if (stride == 2) {
-    layout = _GeometryLayout.default.XY;
-  } else if (stride == 3) {
-    layout = _GeometryLayout.default.XYZ;
-  } else if (stride == 4) {
-    layout = _GeometryLayout.default.XYZM;
-  }
-
-  return (
-    /** @type {import("./GeometryLayout.js").default} */
-    layout
-  );
-}
-/**
- * @param {import("./GeometryLayout.js").default} layout Layout.
- * @return {number} Stride.
- */
-
-
-function getStrideForLayout(layout) {
-  var stride;
-
-  if (layout == _GeometryLayout.default.XY) {
-    stride = 2;
-  } else if (layout == _GeometryLayout.default.XYZ || layout == _GeometryLayout.default.XYM) {
-    stride = 3;
-  } else if (layout == _GeometryLayout.default.XYZM) {
-    stride = 4;
-  }
-
-  return (
-    /** @type {number} */
-    stride
-  );
-}
-/**
- * @param {SimpleGeometry} simpleGeometry Simple geometry.
- * @param {import("../transform.js").Transform} transform Transform.
- * @param {Array<number>=} opt_dest Destination.
- * @return {Array<number>} Transformed flat coordinates.
- */
-
-
-function transformGeom2D(simpleGeometry, transform, opt_dest) {
-  var flatCoordinates = simpleGeometry.getFlatCoordinates();
-
-  if (!flatCoordinates) {
-    return null;
-  } else {
-    var stride = simpleGeometry.getStride();
-    return (0, _transform.transform2D)(flatCoordinates, 0, flatCoordinates.length, stride, transform, opt_dest);
-  }
-}
-
-var _default = SimpleGeometry;
-exports.default = _default;
-},{"./Geometry.js":"node_modules/ol/geom/Geometry.js","./GeometryLayout.js":"node_modules/ol/geom/GeometryLayout.js","../util.js":"node_modules/ol/util.js","../extent.js":"node_modules/ol/extent.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/ol/geom/flat/deflate.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.deflateCoordinate = deflateCoordinate;
-exports.deflateCoordinates = deflateCoordinates;
-exports.deflateCoordinatesArray = deflateCoordinatesArray;
-exports.deflateMultiCoordinatesArray = deflateMultiCoordinatesArray;
-
-/**
- * @module ol/geom/flat/deflate
- */
-
-/**
- * @param {Array<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {import("../../coordinate.js").Coordinate} coordinate Coordinate.
- * @param {number} stride Stride.
- * @return {number} offset Offset.
- */
-function deflateCoordinate(flatCoordinates, offset, coordinate, stride) {
-  for (var i = 0, ii = coordinate.length; i < ii; ++i) {
-    flatCoordinates[offset++] = coordinate[i];
-  }
-
-  return offset;
-}
-/**
- * @param {Array<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {Array<import("../../coordinate.js").Coordinate>} coordinates Coordinates.
- * @param {number} stride Stride.
- * @return {number} offset Offset.
- */
-
-
-function deflateCoordinates(flatCoordinates, offset, coordinates, stride) {
-  for (var i = 0, ii = coordinates.length; i < ii; ++i) {
-    var coordinate = coordinates[i];
-
-    for (var j = 0; j < stride; ++j) {
-      flatCoordinates[offset++] = coordinate[j];
-    }
-  }
-
-  return offset;
-}
-/**
- * @param {Array<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {Array<Array<import("../../coordinate.js").Coordinate>>} coordinatess Coordinatess.
- * @param {number} stride Stride.
- * @param {Array<number>=} opt_ends Ends.
- * @return {Array<number>} Ends.
- */
-
-
-function deflateCoordinatesArray(flatCoordinates, offset, coordinatess, stride, opt_ends) {
-  var ends = opt_ends ? opt_ends : [];
-  var i = 0;
-
-  for (var j = 0, jj = coordinatess.length; j < jj; ++j) {
-    var end = deflateCoordinates(flatCoordinates, offset, coordinatess[j], stride);
-    ends[i++] = end;
-    offset = end;
-  }
-
-  ends.length = i;
-  return ends;
-}
-/**
- * @param {Array<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {Array<Array<Array<import("../../coordinate.js").Coordinate>>>} coordinatesss Coordinatesss.
- * @param {number} stride Stride.
- * @param {Array<Array<number>>=} opt_endss Endss.
- * @return {Array<Array<number>>} Endss.
- */
-
-
-function deflateMultiCoordinatesArray(flatCoordinates, offset, coordinatesss, stride, opt_endss) {
-  var endss = opt_endss ? opt_endss : [];
-  var i = 0;
-
-  for (var j = 0, jj = coordinatesss.length; j < jj; ++j) {
-    var ends = deflateCoordinatesArray(flatCoordinates, offset, coordinatesss[j], stride, endss[i]);
-    endss[i++] = ends;
-    offset = ends[ends.length - 1];
-  }
-
-  endss.length = i;
-  return endss;
-}
-},{}],"node_modules/ol/geom/Circle.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _GeometryType = _interopRequireDefault(require("./GeometryType.js"));
-
-var _SimpleGeometry = _interopRequireDefault(require("./SimpleGeometry.js"));
-
-var _extent = require("../extent.js");
-
-var _deflate = require("./flat/deflate.js");
-
-var _transform = require("./flat/transform.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-/**
- * @module ol/geom/Circle
- */
-
-
-/**
- * @classdesc
- * Circle geometry.
- *
- * @api
- */
-var Circle =
-/** @class */
-function (_super) {
-  __extends(Circle, _super);
-  /**
-   * @param {!import("../coordinate.js").Coordinate} center Center.
-   *     For internal use, flat coordinates in combination with `opt_layout` and no
-   *     `opt_radius` are also accepted.
-   * @param {number=} opt_radius Radius.
-   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
-   */
-
-
-  function Circle(center, opt_radius, opt_layout) {
-    var _this = _super.call(this) || this;
-
-    if (opt_layout !== undefined && opt_radius === undefined) {
-      _this.setFlatCoordinates(opt_layout, center);
-    } else {
-      var radius = opt_radius ? opt_radius : 0;
-
-      _this.setCenterAndRadius(center, radius, opt_layout);
-    }
-
-    return _this;
-  }
-  /**
-   * Make a complete copy of the geometry.
-   * @return {!Circle} Clone.
-   * @api
-   */
-
-
-  Circle.prototype.clone = function () {
-    var circle = new Circle(this.flatCoordinates.slice(), undefined, this.layout);
-    circle.applyProperties(this);
-    return circle;
-  };
-  /**
-   * @param {number} x X.
-   * @param {number} y Y.
-   * @param {import("../coordinate.js").Coordinate} closestPoint Closest point.
-   * @param {number} minSquaredDistance Minimum squared distance.
-   * @return {number} Minimum squared distance.
-   */
-
-
-  Circle.prototype.closestPointXY = function (x, y, closestPoint, minSquaredDistance) {
-    var flatCoordinates = this.flatCoordinates;
-    var dx = x - flatCoordinates[0];
-    var dy = y - flatCoordinates[1];
-    var squaredDistance = dx * dx + dy * dy;
-
-    if (squaredDistance < minSquaredDistance) {
-      if (squaredDistance === 0) {
-        for (var i = 0; i < this.stride; ++i) {
-          closestPoint[i] = flatCoordinates[i];
-        }
-      } else {
-        var delta = this.getRadius() / Math.sqrt(squaredDistance);
-        closestPoint[0] = flatCoordinates[0] + delta * dx;
-        closestPoint[1] = flatCoordinates[1] + delta * dy;
-
-        for (var i = 2; i < this.stride; ++i) {
-          closestPoint[i] = flatCoordinates[i];
-        }
-      }
-
-      closestPoint.length = this.stride;
-      return squaredDistance;
-    } else {
-      return minSquaredDistance;
-    }
-  };
-  /**
-   * @param {number} x X.
-   * @param {number} y Y.
-   * @return {boolean} Contains (x, y).
-   */
-
-
-  Circle.prototype.containsXY = function (x, y) {
-    var flatCoordinates = this.flatCoordinates;
-    var dx = x - flatCoordinates[0];
-    var dy = y - flatCoordinates[1];
-    return dx * dx + dy * dy <= this.getRadiusSquared_();
-  };
-  /**
-   * Return the center of the circle as {@link module:ol/coordinate~Coordinate coordinate}.
-   * @return {import("../coordinate.js").Coordinate} Center.
-   * @api
-   */
-
-
-  Circle.prototype.getCenter = function () {
-    return this.flatCoordinates.slice(0, this.stride);
-  };
-  /**
-   * @param {import("../extent.js").Extent} extent Extent.
-   * @protected
-   * @return {import("../extent.js").Extent} extent Extent.
-   */
-
-
-  Circle.prototype.computeExtent = function (extent) {
-    var flatCoordinates = this.flatCoordinates;
-    var radius = flatCoordinates[this.stride] - flatCoordinates[0];
-    return (0, _extent.createOrUpdate)(flatCoordinates[0] - radius, flatCoordinates[1] - radius, flatCoordinates[0] + radius, flatCoordinates[1] + radius, extent);
-  };
-  /**
-   * Return the radius of the circle.
-   * @return {number} Radius.
-   * @api
-   */
-
-
-  Circle.prototype.getRadius = function () {
-    return Math.sqrt(this.getRadiusSquared_());
-  };
-  /**
-   * @private
-   * @return {number} Radius squared.
-   */
-
-
-  Circle.prototype.getRadiusSquared_ = function () {
-    var dx = this.flatCoordinates[this.stride] - this.flatCoordinates[0];
-    var dy = this.flatCoordinates[this.stride + 1] - this.flatCoordinates[1];
-    return dx * dx + dy * dy;
-  };
-  /**
-   * Get the type of this geometry.
-   * @return {import("./GeometryType.js").default} Geometry type.
-   * @api
-   */
-
-
-  Circle.prototype.getType = function () {
-    return _GeometryType.default.CIRCLE;
-  };
-  /**
-   * Test if the geometry and the passed extent intersect.
-   * @param {import("../extent.js").Extent} extent Extent.
-   * @return {boolean} `true` if the geometry and the extent intersect.
-   * @api
-   */
-
-
-  Circle.prototype.intersectsExtent = function (extent) {
-    var circleExtent = this.getExtent();
-
-    if ((0, _extent.intersects)(extent, circleExtent)) {
-      var center = this.getCenter();
-
-      if (extent[0] <= center[0] && extent[2] >= center[0]) {
-        return true;
-      }
-
-      if (extent[1] <= center[1] && extent[3] >= center[1]) {
-        return true;
-      }
-
-      return (0, _extent.forEachCorner)(extent, this.intersectsCoordinate.bind(this));
-    }
-
-    return false;
-  };
-  /**
-   * Set the center of the circle as {@link module:ol/coordinate~Coordinate coordinate}.
-   * @param {import("../coordinate.js").Coordinate} center Center.
-   * @api
-   */
-
-
-  Circle.prototype.setCenter = function (center) {
-    var stride = this.stride;
-    var radius = this.flatCoordinates[stride] - this.flatCoordinates[0];
-    var flatCoordinates = center.slice();
-    flatCoordinates[stride] = flatCoordinates[0] + radius;
-
-    for (var i = 1; i < stride; ++i) {
-      flatCoordinates[stride + i] = center[i];
-    }
-
-    this.setFlatCoordinates(this.layout, flatCoordinates);
-    this.changed();
-  };
-  /**
-   * Set the center (as {@link module:ol/coordinate~Coordinate coordinate}) and the radius (as
-   * number) of the circle.
-   * @param {!import("../coordinate.js").Coordinate} center Center.
-   * @param {number} radius Radius.
-   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
-   * @api
-   */
-
-
-  Circle.prototype.setCenterAndRadius = function (center, radius, opt_layout) {
-    this.setLayout(opt_layout, center, 0);
-
-    if (!this.flatCoordinates) {
-      this.flatCoordinates = [];
-    }
-    /** @type {Array<number>} */
-
-
-    var flatCoordinates = this.flatCoordinates;
-    var offset = (0, _deflate.deflateCoordinate)(flatCoordinates, 0, center, this.stride);
-    flatCoordinates[offset++] = flatCoordinates[0] + radius;
-
-    for (var i = 1, ii = this.stride; i < ii; ++i) {
-      flatCoordinates[offset++] = flatCoordinates[i];
-    }
-
-    flatCoordinates.length = offset;
-    this.changed();
-  };
-
-  Circle.prototype.getCoordinates = function () {
-    return null;
-  };
-
-  Circle.prototype.setCoordinates = function (coordinates, opt_layout) {};
-  /**
-   * Set the radius of the circle. The radius is in the units of the projection.
-   * @param {number} radius Radius.
-   * @api
-   */
-
-
-  Circle.prototype.setRadius = function (radius) {
-    this.flatCoordinates[this.stride] = this.flatCoordinates[0] + radius;
-    this.changed();
-  };
-  /**
-   * Rotate the geometry around a given coordinate. This modifies the geometry
-   * coordinates in place.
-   * @param {number} angle Rotation angle in counter-clockwise radians.
-   * @param {import("../coordinate.js").Coordinate} anchor The rotation center.
-   * @api
-   */
-
-
-  Circle.prototype.rotate = function (angle, anchor) {
-    var center = this.getCenter();
-    var stride = this.getStride();
-    this.setCenter((0, _transform.rotate)(center, 0, center.length, stride, angle, anchor, center));
-    this.changed();
-  };
-  /**
-   * Translate the geometry.  This modifies the geometry coordinates in place.  If
-   * instead you want a new geometry, first `clone()` this geometry.
-   * @param {number} deltaX Delta X.
-   * @param {number} deltaY Delta Y.
-   * @api
-   */
-
-
-  Circle.prototype.translate = function (deltaX, deltaY) {
-    var center = this.getCenter();
-    var stride = this.getStride();
-    this.setCenter((0, _transform.translate)(center, 0, center.length, stride, deltaX, deltaY, center));
-    this.changed();
-  };
-
-  return Circle;
-}(_SimpleGeometry.default);
-/**
- * Transform each coordinate of the circle from one coordinate reference system
- * to another. The geometry is modified in place.
- * If you do not want the geometry modified in place, first clone() it and
- * then use this function on the clone.
- *
- * Internally a circle is currently represented by two points: the center of
- * the circle `[cx, cy]`, and the point to the right of the circle
- * `[cx + r, cy]`. This `transform` function just transforms these two points.
- * So the resulting geometry is also a circle, and that circle does not
- * correspond to the shape that would be obtained by transforming every point
- * of the original circle.
- *
- * @param {import("../proj.js").ProjectionLike} source The current projection.  Can be a
- *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
- * @param {import("../proj.js").ProjectionLike} destination The desired projection.  Can be a
- *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
- * @return {Circle} This geometry.  Note that original geometry is
- *     modified in place.
- * @function
- * @api
- */
-
-
-Circle.prototype.transform;
-var _default = Circle;
-exports.default = _default;
-},{"./GeometryType.js":"node_modules/ol/geom/GeometryType.js","./SimpleGeometry.js":"node_modules/ol/geom/SimpleGeometry.js","../extent.js":"node_modules/ol/extent.js","./flat/deflate.js":"node_modules/ol/geom/flat/deflate.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/ol/Feature.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createStyleFunction = createStyleFunction;
-exports.default = void 0;
-
-var _Object = _interopRequireWildcard(require("./Object.js"));
-
-var _EventType = _interopRequireDefault(require("./events/EventType.js"));
-
-var _asserts = require("./asserts.js");
-
-var _events = require("./events.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-var __extends = void 0 && (void 0).__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-/**
- * @module ol/Feature
- */
-
-
-/**
- * @typedef {typeof Feature|typeof import("./render/Feature.js").default} FeatureClass
- */
-
-/**
- * @typedef {Feature|import("./render/Feature.js").default} FeatureLike
- */
-
-/**
- * @classdesc
- * A vector object for geographic features with a geometry and other
- * attribute properties, similar to the features in vector file formats like
- * GeoJSON.
- *
- * Features can be styled individually with `setStyle`; otherwise they use the
- * style of their vector layer.
- *
- * Note that attribute properties are set as {@link module:ol/Object} properties on
- * the feature object, so they are observable, and have get/set accessors.
- *
- * Typically, a feature has a single geometry property. You can set the
- * geometry using the `setGeometry` method and get it with `getGeometry`.
- * It is possible to store more than one geometry on a feature using attribute
- * properties. By default, the geometry used for rendering is identified by
- * the property name `geometry`. If you want to use another geometry property
- * for rendering, use the `setGeometryName` method to change the attribute
- * property associated with the geometry for the feature.  For example:
- *
- * ```js
- *
- * import Feature from 'ol/Feature';
- * import Polygon from 'ol/geom/Polygon';
- * import Point from 'ol/geom/Point';
- *
- * var feature = new Feature({
- *   geometry: new Polygon(polyCoords),
- *   labelPoint: new Point(labelCoords),
- *   name: 'My Polygon'
- * });
- *
- * // get the polygon geometry
- * var poly = feature.getGeometry();
- *
- * // Render the feature as a point using the coordinates from labelPoint
- * feature.setGeometryName('labelPoint');
- *
- * // get the point geometry
- * var point = feature.getGeometry();
- * ```
- *
- * @api
- * @template {import("./geom/Geometry.js").default} Geometry
- */
-var Feature =
-/** @class */
-function (_super) {
-  __extends(Feature, _super);
-  /**
-   * @param {Geometry|Object<string, *>=} opt_geometryOrProperties
-   *     You may pass a Geometry object directly, or an object literal containing
-   *     properties. If you pass an object literal, you may include a Geometry
-   *     associated with a `geometry` key.
-   */
-
-
-  function Feature(opt_geometryOrProperties) {
-    var _this = _super.call(this) || this;
-    /**
-     * @private
-     * @type {number|string|undefined}
-     */
-
-
-    _this.id_ = undefined;
-    /**
-     * @type {string}
-     * @private
-     */
-
-    _this.geometryName_ = 'geometry';
-    /**
-     * User provided style.
-     * @private
-     * @type {import("./style/Style.js").StyleLike}
-     */
-
-    _this.style_ = null;
-    /**
-     * @private
-     * @type {import("./style/Style.js").StyleFunction|undefined}
-     */
-
-    _this.styleFunction_ = undefined;
-    /**
-     * @private
-     * @type {?import("./events.js").EventsKey}
-     */
-
-    _this.geometryChangeKey_ = null;
-
-    _this.addEventListener((0, _Object.getChangeEventType)(_this.geometryName_), _this.handleGeometryChanged_);
-
-    if (opt_geometryOrProperties) {
-      if (typeof
-      /** @type {?} */
-      opt_geometryOrProperties.getSimplifiedGeometry === 'function') {
-        var geometry =
-        /** @type {Geometry} */
-        opt_geometryOrProperties;
-
-        _this.setGeometry(geometry);
-      } else {
-        /** @type {Object<string, *>} */
-        var properties = opt_geometryOrProperties;
-
-        _this.setProperties(properties);
-      }
-    }
-
-    return _this;
-  }
-  /**
-   * Clone this feature. If the original feature has a geometry it
-   * is also cloned. The feature id is not set in the clone.
-   * @return {Feature} The clone.
-   * @api
-   */
-
-
-  Feature.prototype.clone = function () {
-    var clone = new Feature(this.hasProperties() ? this.getProperties() : null);
-    clone.setGeometryName(this.getGeometryName());
-    var geometry = this.getGeometry();
-
-    if (geometry) {
-      clone.setGeometry(geometry.clone());
-    }
-
-    var style = this.getStyle();
-
-    if (style) {
-      clone.setStyle(style);
-    }
-
-    return clone;
-  };
-  /**
-   * Get the feature's default geometry.  A feature may have any number of named
-   * geometries.  The "default" geometry (the one that is rendered by default) is
-   * set when calling {@link module:ol/Feature~Feature#setGeometry}.
-   * @return {Geometry|undefined} The default geometry for the feature.
-   * @api
-   * @observable
-   */
-
-
-  Feature.prototype.getGeometry = function () {
-    return (
-      /** @type {Geometry|undefined} */
-      this.get(this.geometryName_)
-    );
-  };
-  /**
-   * Get the feature identifier.  This is a stable identifier for the feature and
-   * is either set when reading data from a remote source or set explicitly by
-   * calling {@link module:ol/Feature~Feature#setId}.
-   * @return {number|string|undefined} Id.
-   * @api
-   */
-
-
-  Feature.prototype.getId = function () {
-    return this.id_;
-  };
-  /**
-   * Get the name of the feature's default geometry.  By default, the default
-   * geometry is named `geometry`.
-   * @return {string} Get the property name associated with the default geometry
-   *     for this feature.
-   * @api
-   */
-
-
-  Feature.prototype.getGeometryName = function () {
-    return this.geometryName_;
-  };
-  /**
-   * Get the feature's style. Will return what was provided to the
-   * {@link module:ol/Feature~Feature#setStyle} method.
-   * @return {import("./style/Style.js").StyleLike|undefined} The feature style.
-   * @api
-   */
-
-
-  Feature.prototype.getStyle = function () {
-    return this.style_;
-  };
-  /**
-   * Get the feature's style function.
-   * @return {import("./style/Style.js").StyleFunction|undefined} Return a function
-   * representing the current style of this feature.
-   * @api
-   */
-
-
-  Feature.prototype.getStyleFunction = function () {
-    return this.styleFunction_;
-  };
-  /**
-   * @private
-   */
-
-
-  Feature.prototype.handleGeometryChange_ = function () {
-    this.changed();
-  };
-  /**
-   * @private
-   */
-
-
-  Feature.prototype.handleGeometryChanged_ = function () {
-    if (this.geometryChangeKey_) {
-      (0, _events.unlistenByKey)(this.geometryChangeKey_);
-      this.geometryChangeKey_ = null;
-    }
-
-    var geometry = this.getGeometry();
-
-    if (geometry) {
-      this.geometryChangeKey_ = (0, _events.listen)(geometry, _EventType.default.CHANGE, this.handleGeometryChange_, this);
-    }
-
-    this.changed();
-  };
-  /**
-   * Set the default geometry for the feature.  This will update the property
-   * with the name returned by {@link module:ol/Feature~Feature#getGeometryName}.
-   * @param {Geometry|undefined} geometry The new geometry.
-   * @api
-   * @observable
-   */
-
-
-  Feature.prototype.setGeometry = function (geometry) {
-    this.set(this.geometryName_, geometry);
-  };
-  /**
-   * Set the style for the feature to override the layer style.  This can be a
-   * single style object, an array of styles, or a function that takes a
-   * resolution and returns an array of styles. To unset the feature style, call
-   * `setStyle()` without arguments or a falsey value.
-   * @param {import("./style/Style.js").StyleLike=} opt_style Style for this feature.
-   * @api
-   * @fires module:ol/events/Event~BaseEvent#event:change
-   */
-
-
-  Feature.prototype.setStyle = function (opt_style) {
-    this.style_ = opt_style;
-    this.styleFunction_ = !opt_style ? undefined : createStyleFunction(opt_style);
-    this.changed();
-  };
-  /**
-   * Set the feature id.  The feature id is considered stable and may be used when
-   * requesting features or comparing identifiers returned from a remote source.
-   * The feature id can be used with the
-   * {@link module:ol/source/Vector~VectorSource#getFeatureById} method.
-   * @param {number|string|undefined} id The feature id.
-   * @api
-   * @fires module:ol/events/Event~BaseEvent#event:change
-   */
-
-
-  Feature.prototype.setId = function (id) {
-    this.id_ = id;
-    this.changed();
-  };
-  /**
-   * Set the property name to be used when getting the feature's default geometry.
-   * When calling {@link module:ol/Feature~Feature#getGeometry}, the value of the property with
-   * this name will be returned.
-   * @param {string} name The property name of the default geometry.
-   * @api
-   */
-
-
-  Feature.prototype.setGeometryName = function (name) {
-    this.removeEventListener((0, _Object.getChangeEventType)(this.geometryName_), this.handleGeometryChanged_);
-    this.geometryName_ = name;
-    this.addEventListener((0, _Object.getChangeEventType)(this.geometryName_), this.handleGeometryChanged_);
-    this.handleGeometryChanged_();
-  };
-
-  return Feature;
-}(_Object.default);
-/**
- * Convert the provided object into a feature style function.  Functions passed
- * through unchanged.  Arrays of Style or single style objects wrapped
- * in a new feature style function.
- * @param {!import("./style/Style.js").StyleFunction|!Array<import("./style/Style.js").default>|!import("./style/Style.js").default} obj
- *     A feature style function, a single style, or an array of styles.
- * @return {import("./style/Style.js").StyleFunction} A style function.
- */
-
-
-function createStyleFunction(obj) {
-  if (typeof obj === 'function') {
-    return obj;
-  } else {
-    /**
-     * @type {Array<import("./style/Style.js").default>}
-     */
-    var styles_1;
-
-    if (Array.isArray(obj)) {
-      styles_1 = obj;
-    } else {
-      (0, _asserts.assert)(typeof
-      /** @type {?} */
-      obj.getZIndex === 'function', 41); // Expected an `import("./style/Style.js").Style` or an array of `import("./style/Style.js").Style`
-
-      var style =
-      /** @type {import("./style/Style.js").default} */
-      obj;
-      styles_1 = [style];
-    }
-
-    return function () {
-      return styles_1;
-    };
-  }
-}
-
-var _default = Feature;
-exports.default = _default;
-},{"./Object.js":"node_modules/ol/Object.js","./events/EventType.js":"node_modules/ol/events/EventType.js","./asserts.js":"node_modules/ol/asserts.js","./events.js":"node_modules/ol/events.js"}],"node_modules/ol/geom/GeometryCollection.js":[function(require,module,exports) {
+},{"../Object.js":"node_modules/ol/Object.js","../proj/Units.js":"node_modules/ol/proj/Units.js","../util.js":"node_modules/ol/util.js","../transform.js":"node_modules/ol/transform.js","../extent.js":"node_modules/ol/extent.js","../proj.js":"node_modules/ol/proj.js","../functions.js":"node_modules/ol/functions.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/ol/geom/GeometryCollection.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8661,7 +7789,436 @@ function getObject(source) {
 
 var _default = JSONFeature;
 exports.default = _default;
-},{"./Feature.js":"node_modules/ol/format/Feature.js","./FormatType.js":"node_modules/ol/format/FormatType.js","../util.js":"node_modules/ol/util.js"}],"node_modules/ol/geom/flat/closest.js":[function(require,module,exports) {
+},{"./Feature.js":"node_modules/ol/format/Feature.js","./FormatType.js":"node_modules/ol/format/FormatType.js","../util.js":"node_modules/ol/util.js"}],"node_modules/ol/geom/GeometryLayout.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+ * @module ol/geom/GeometryLayout
+ */
+
+/**
+ * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
+ * or measure ('M') coordinate is available. Supported values are `'XY'`,
+ * `'XYZ'`, `'XYM'`, `'XYZM'`.
+ * @enum {string}
+ */
+var _default = {
+  XY: 'XY',
+  XYZ: 'XYZ',
+  XYM: 'XYM',
+  XYZM: 'XYZM'
+};
+exports.default = _default;
+},{}],"node_modules/ol/geom/SimpleGeometry.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getStrideForLayout = getStrideForLayout;
+exports.transformGeom2D = transformGeom2D;
+exports.default = void 0;
+
+var _Geometry = _interopRequireDefault(require("./Geometry.js"));
+
+var _GeometryLayout = _interopRequireDefault(require("./GeometryLayout.js"));
+
+var _util = require("../util.js");
+
+var _extent = require("../extent.js");
+
+var _transform = require("./flat/transform.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var extendStatics = function (d, b) {
+    extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+    };
+
+    return extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+/**
+ * @module ol/geom/SimpleGeometry
+ */
+
+
+/**
+ * @classdesc
+ * Abstract base class; only used for creating subclasses; do not instantiate
+ * in apps, as cannot be rendered.
+ *
+ * @abstract
+ * @api
+ */
+var SimpleGeometry =
+/** @class */
+function (_super) {
+  __extends(SimpleGeometry, _super);
+
+  function SimpleGeometry() {
+    var _this = _super.call(this) || this;
+    /**
+     * @protected
+     * @type {import("./GeometryLayout.js").default}
+     */
+
+
+    _this.layout = _GeometryLayout.default.XY;
+    /**
+     * @protected
+     * @type {number}
+     */
+
+    _this.stride = 2;
+    /**
+     * @protected
+     * @type {Array<number>}
+     */
+
+    _this.flatCoordinates = null;
+    return _this;
+  }
+  /**
+   * @param {import("../extent.js").Extent} extent Extent.
+   * @protected
+   * @return {import("../extent.js").Extent} extent Extent.
+   */
+
+
+  SimpleGeometry.prototype.computeExtent = function (extent) {
+    return (0, _extent.createOrUpdateFromFlatCoordinates)(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, extent);
+  };
+  /**
+   * @abstract
+   * @return {Array<*>} Coordinates.
+   */
+
+
+  SimpleGeometry.prototype.getCoordinates = function () {
+    return (0, _util.abstract)();
+  };
+  /**
+   * Return the first coordinate of the geometry.
+   * @return {import("../coordinate.js").Coordinate} First coordinate.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.getFirstCoordinate = function () {
+    return this.flatCoordinates.slice(0, this.stride);
+  };
+  /**
+   * @return {Array<number>} Flat coordinates.
+   */
+
+
+  SimpleGeometry.prototype.getFlatCoordinates = function () {
+    return this.flatCoordinates;
+  };
+  /**
+   * Return the last coordinate of the geometry.
+   * @return {import("../coordinate.js").Coordinate} Last point.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.getLastCoordinate = function () {
+    return this.flatCoordinates.slice(this.flatCoordinates.length - this.stride);
+  };
+  /**
+   * Return the {@link module:ol/geom/GeometryLayout layout} of the geometry.
+   * @return {import("./GeometryLayout.js").default} Layout.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.getLayout = function () {
+    return this.layout;
+  };
+  /**
+   * Create a simplified version of this geometry using the Douglas Peucker algorithm.
+   * @param {number} squaredTolerance Squared tolerance.
+   * @return {SimpleGeometry} Simplified geometry.
+   */
+
+
+  SimpleGeometry.prototype.getSimplifiedGeometry = function (squaredTolerance) {
+    if (this.simplifiedGeometryRevision !== this.getRevision()) {
+      this.simplifiedGeometryMaxMinSquaredTolerance = 0;
+      this.simplifiedGeometryRevision = this.getRevision();
+    } // If squaredTolerance is negative or if we know that simplification will not
+    // have any effect then just return this.
+
+
+    if (squaredTolerance < 0 || this.simplifiedGeometryMaxMinSquaredTolerance !== 0 && squaredTolerance <= this.simplifiedGeometryMaxMinSquaredTolerance) {
+      return this;
+    }
+
+    var simplifiedGeometry = this.getSimplifiedGeometryInternal(squaredTolerance);
+    var simplifiedFlatCoordinates = simplifiedGeometry.getFlatCoordinates();
+
+    if (simplifiedFlatCoordinates.length < this.flatCoordinates.length) {
+      return simplifiedGeometry;
+    } else {
+      // Simplification did not actually remove any coordinates.  We now know
+      // that any calls to getSimplifiedGeometry with a squaredTolerance less
+      // than or equal to the current squaredTolerance will also not have any
+      // effect.  This allows us to short circuit simplification (saving CPU
+      // cycles) and prevents the cache of simplified geometries from filling
+      // up with useless identical copies of this geometry (saving memory).
+      this.simplifiedGeometryMaxMinSquaredTolerance = squaredTolerance;
+      return this;
+    }
+  };
+  /**
+   * @param {number} squaredTolerance Squared tolerance.
+   * @return {SimpleGeometry} Simplified geometry.
+   * @protected
+   */
+
+
+  SimpleGeometry.prototype.getSimplifiedGeometryInternal = function (squaredTolerance) {
+    return this;
+  };
+  /**
+   * @return {number} Stride.
+   */
+
+
+  SimpleGeometry.prototype.getStride = function () {
+    return this.stride;
+  };
+  /**
+   * @param {import("./GeometryLayout.js").default} layout Layout.
+   * @param {Array<number>} flatCoordinates Flat coordinates.
+   */
+
+
+  SimpleGeometry.prototype.setFlatCoordinates = function (layout, flatCoordinates) {
+    this.stride = getStrideForLayout(layout);
+    this.layout = layout;
+    this.flatCoordinates = flatCoordinates;
+  };
+  /**
+   * @abstract
+   * @param {!Array<*>} coordinates Coordinates.
+   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
+   */
+
+
+  SimpleGeometry.prototype.setCoordinates = function (coordinates, opt_layout) {
+    (0, _util.abstract)();
+  };
+  /**
+   * @param {import("./GeometryLayout.js").default|undefined} layout Layout.
+   * @param {Array<*>} coordinates Coordinates.
+   * @param {number} nesting Nesting.
+   * @protected
+   */
+
+
+  SimpleGeometry.prototype.setLayout = function (layout, coordinates, nesting) {
+    /** @type {number} */
+    var stride;
+
+    if (layout) {
+      stride = getStrideForLayout(layout);
+    } else {
+      for (var i = 0; i < nesting; ++i) {
+        if (coordinates.length === 0) {
+          this.layout = _GeometryLayout.default.XY;
+          this.stride = 2;
+          return;
+        } else {
+          coordinates =
+          /** @type {Array} */
+          coordinates[0];
+        }
+      }
+
+      stride = coordinates.length;
+      layout = getLayoutForStride(stride);
+    }
+
+    this.layout = layout;
+    this.stride = stride;
+  };
+  /**
+   * Apply a transform function to the coordinates of the geometry.
+   * The geometry is modified in place.
+   * If you do not want the geometry modified in place, first `clone()` it and
+   * then use this function on the clone.
+   * @param {import("../proj.js").TransformFunction} transformFn Transform function.
+   * Called with a flat array of geometry coordinates.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.applyTransform = function (transformFn) {
+    if (this.flatCoordinates) {
+      transformFn(this.flatCoordinates, this.flatCoordinates, this.stride);
+      this.changed();
+    }
+  };
+  /**
+   * Rotate the geometry around a given coordinate. This modifies the geometry
+   * coordinates in place.
+   * @param {number} angle Rotation angle in counter-clockwise radians.
+   * @param {import("../coordinate.js").Coordinate} anchor The rotation center.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.rotate = function (angle, anchor) {
+    var flatCoordinates = this.getFlatCoordinates();
+
+    if (flatCoordinates) {
+      var stride = this.getStride();
+      (0, _transform.rotate)(flatCoordinates, 0, flatCoordinates.length, stride, angle, anchor, flatCoordinates);
+      this.changed();
+    }
+  };
+  /**
+   * Scale the geometry (with an optional origin).  This modifies the geometry
+   * coordinates in place.
+   * @param {number} sx The scaling factor in the x-direction.
+   * @param {number=} opt_sy The scaling factor in the y-direction (defaults to sx).
+   * @param {import("../coordinate.js").Coordinate=} opt_anchor The scale origin (defaults to the center
+   *     of the geometry extent).
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.scale = function (sx, opt_sy, opt_anchor) {
+    var sy = opt_sy;
+
+    if (sy === undefined) {
+      sy = sx;
+    }
+
+    var anchor = opt_anchor;
+
+    if (!anchor) {
+      anchor = (0, _extent.getCenter)(this.getExtent());
+    }
+
+    var flatCoordinates = this.getFlatCoordinates();
+
+    if (flatCoordinates) {
+      var stride = this.getStride();
+      (0, _transform.scale)(flatCoordinates, 0, flatCoordinates.length, stride, sx, sy, anchor, flatCoordinates);
+      this.changed();
+    }
+  };
+  /**
+   * Translate the geometry.  This modifies the geometry coordinates in place.  If
+   * instead you want a new geometry, first `clone()` this geometry.
+   * @param {number} deltaX Delta X.
+   * @param {number} deltaY Delta Y.
+   * @api
+   */
+
+
+  SimpleGeometry.prototype.translate = function (deltaX, deltaY) {
+    var flatCoordinates = this.getFlatCoordinates();
+
+    if (flatCoordinates) {
+      var stride = this.getStride();
+      (0, _transform.translate)(flatCoordinates, 0, flatCoordinates.length, stride, deltaX, deltaY, flatCoordinates);
+      this.changed();
+    }
+  };
+
+  return SimpleGeometry;
+}(_Geometry.default);
+/**
+ * @param {number} stride Stride.
+ * @return {import("./GeometryLayout.js").default} layout Layout.
+ */
+
+
+function getLayoutForStride(stride) {
+  var layout;
+
+  if (stride == 2) {
+    layout = _GeometryLayout.default.XY;
+  } else if (stride == 3) {
+    layout = _GeometryLayout.default.XYZ;
+  } else if (stride == 4) {
+    layout = _GeometryLayout.default.XYZM;
+  }
+
+  return (
+    /** @type {import("./GeometryLayout.js").default} */
+    layout
+  );
+}
+/**
+ * @param {import("./GeometryLayout.js").default} layout Layout.
+ * @return {number} Stride.
+ */
+
+
+function getStrideForLayout(layout) {
+  var stride;
+
+  if (layout == _GeometryLayout.default.XY) {
+    stride = 2;
+  } else if (layout == _GeometryLayout.default.XYZ || layout == _GeometryLayout.default.XYM) {
+    stride = 3;
+  } else if (layout == _GeometryLayout.default.XYZM) {
+    stride = 4;
+  }
+
+  return (
+    /** @type {number} */
+    stride
+  );
+}
+/**
+ * @param {SimpleGeometry} simpleGeometry Simple geometry.
+ * @param {import("../transform.js").Transform} transform Transform.
+ * @param {Array<number>=} opt_dest Destination.
+ * @return {Array<number>} Transformed flat coordinates.
+ */
+
+
+function transformGeom2D(simpleGeometry, transform, opt_dest) {
+  var flatCoordinates = simpleGeometry.getFlatCoordinates();
+
+  if (!flatCoordinates) {
+    return null;
+  } else {
+    var stride = simpleGeometry.getStride();
+    return (0, _transform.transform2D)(flatCoordinates, 0, flatCoordinates.length, stride, transform, opt_dest);
+  }
+}
+
+var _default = SimpleGeometry;
+exports.default = _default;
+},{"./Geometry.js":"node_modules/ol/geom/Geometry.js","./GeometryLayout.js":"node_modules/ol/geom/GeometryLayout.js","../util.js":"node_modules/ol/util.js","../extent.js":"node_modules/ol/extent.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/ol/geom/flat/closest.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8935,7 +8492,102 @@ function assignClosestMultiArrayPoint(flatCoordinates, offset, endss, stride, ma
 
   return minSquaredDistance;
 }
-},{"../../math.js":"node_modules/ol/math.js"}],"node_modules/ol/geom/flat/simplify.js":[function(require,module,exports) {
+},{"../../math.js":"node_modules/ol/math.js"}],"node_modules/ol/geom/flat/deflate.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deflateCoordinate = deflateCoordinate;
+exports.deflateCoordinates = deflateCoordinates;
+exports.deflateCoordinatesArray = deflateCoordinatesArray;
+exports.deflateMultiCoordinatesArray = deflateMultiCoordinatesArray;
+
+/**
+ * @module ol/geom/flat/deflate
+ */
+
+/**
+ * @param {Array<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {import("../../coordinate.js").Coordinate} coordinate Coordinate.
+ * @param {number} stride Stride.
+ * @return {number} offset Offset.
+ */
+function deflateCoordinate(flatCoordinates, offset, coordinate, stride) {
+  for (var i = 0, ii = coordinate.length; i < ii; ++i) {
+    flatCoordinates[offset++] = coordinate[i];
+  }
+
+  return offset;
+}
+/**
+ * @param {Array<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array<import("../../coordinate.js").Coordinate>} coordinates Coordinates.
+ * @param {number} stride Stride.
+ * @return {number} offset Offset.
+ */
+
+
+function deflateCoordinates(flatCoordinates, offset, coordinates, stride) {
+  for (var i = 0, ii = coordinates.length; i < ii; ++i) {
+    var coordinate = coordinates[i];
+
+    for (var j = 0; j < stride; ++j) {
+      flatCoordinates[offset++] = coordinate[j];
+    }
+  }
+
+  return offset;
+}
+/**
+ * @param {Array<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array<Array<import("../../coordinate.js").Coordinate>>} coordinatess Coordinatess.
+ * @param {number} stride Stride.
+ * @param {Array<number>=} opt_ends Ends.
+ * @return {Array<number>} Ends.
+ */
+
+
+function deflateCoordinatesArray(flatCoordinates, offset, coordinatess, stride, opt_ends) {
+  var ends = opt_ends ? opt_ends : [];
+  var i = 0;
+
+  for (var j = 0, jj = coordinatess.length; j < jj; ++j) {
+    var end = deflateCoordinates(flatCoordinates, offset, coordinatess[j], stride);
+    ends[i++] = end;
+    offset = end;
+  }
+
+  ends.length = i;
+  return ends;
+}
+/**
+ * @param {Array<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array<Array<Array<import("../../coordinate.js").Coordinate>>>} coordinatesss Coordinatesss.
+ * @param {number} stride Stride.
+ * @param {Array<Array<number>>=} opt_endss Endss.
+ * @return {Array<Array<number>>} Endss.
+ */
+
+
+function deflateMultiCoordinatesArray(flatCoordinates, offset, coordinatesss, stride, opt_endss) {
+  var endss = opt_endss ? opt_endss : [];
+  var i = 0;
+
+  for (var j = 0, jj = coordinatesss.length; j < jj; ++j) {
+    var ends = deflateCoordinatesArray(flatCoordinates, offset, coordinatesss[j], stride, endss[i]);
+    endss[i++] = ends;
+    offset = ends[ends.length - 1];
+  }
+
+  endss.length = i;
+  return endss;
+}
+},{}],"node_modules/ol/geom/flat/simplify.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30682,7 +30334,355 @@ function (_super) {
 
 var _default = DragRotateAndZoom;
 exports.default = _default;
-},{"./Pointer.js":"node_modules/ol/interaction/Pointer.js","../events/condition.js":"node_modules/ol/events/condition.js"}],"node_modules/rbush/rbush.min.js":[function(require,module,exports) {
+},{"./Pointer.js":"node_modules/ol/interaction/Pointer.js","../events/condition.js":"node_modules/ol/events/condition.js"}],"node_modules/ol/geom/Circle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _GeometryType = _interopRequireDefault(require("./GeometryType.js"));
+
+var _SimpleGeometry = _interopRequireDefault(require("./SimpleGeometry.js"));
+
+var _extent = require("../extent.js");
+
+var _deflate = require("./flat/deflate.js");
+
+var _transform = require("./flat/transform.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var extendStatics = function (d, b) {
+    extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+    };
+
+    return extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+/**
+ * @module ol/geom/Circle
+ */
+
+
+/**
+ * @classdesc
+ * Circle geometry.
+ *
+ * @api
+ */
+var Circle =
+/** @class */
+function (_super) {
+  __extends(Circle, _super);
+  /**
+   * @param {!import("../coordinate.js").Coordinate} center Center.
+   *     For internal use, flat coordinates in combination with `opt_layout` and no
+   *     `opt_radius` are also accepted.
+   * @param {number=} opt_radius Radius.
+   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
+   */
+
+
+  function Circle(center, opt_radius, opt_layout) {
+    var _this = _super.call(this) || this;
+
+    if (opt_layout !== undefined && opt_radius === undefined) {
+      _this.setFlatCoordinates(opt_layout, center);
+    } else {
+      var radius = opt_radius ? opt_radius : 0;
+
+      _this.setCenterAndRadius(center, radius, opt_layout);
+    }
+
+    return _this;
+  }
+  /**
+   * Make a complete copy of the geometry.
+   * @return {!Circle} Clone.
+   * @api
+   */
+
+
+  Circle.prototype.clone = function () {
+    var circle = new Circle(this.flatCoordinates.slice(), undefined, this.layout);
+    circle.applyProperties(this);
+    return circle;
+  };
+  /**
+   * @param {number} x X.
+   * @param {number} y Y.
+   * @param {import("../coordinate.js").Coordinate} closestPoint Closest point.
+   * @param {number} minSquaredDistance Minimum squared distance.
+   * @return {number} Minimum squared distance.
+   */
+
+
+  Circle.prototype.closestPointXY = function (x, y, closestPoint, minSquaredDistance) {
+    var flatCoordinates = this.flatCoordinates;
+    var dx = x - flatCoordinates[0];
+    var dy = y - flatCoordinates[1];
+    var squaredDistance = dx * dx + dy * dy;
+
+    if (squaredDistance < minSquaredDistance) {
+      if (squaredDistance === 0) {
+        for (var i = 0; i < this.stride; ++i) {
+          closestPoint[i] = flatCoordinates[i];
+        }
+      } else {
+        var delta = this.getRadius() / Math.sqrt(squaredDistance);
+        closestPoint[0] = flatCoordinates[0] + delta * dx;
+        closestPoint[1] = flatCoordinates[1] + delta * dy;
+
+        for (var i = 2; i < this.stride; ++i) {
+          closestPoint[i] = flatCoordinates[i];
+        }
+      }
+
+      closestPoint.length = this.stride;
+      return squaredDistance;
+    } else {
+      return minSquaredDistance;
+    }
+  };
+  /**
+   * @param {number} x X.
+   * @param {number} y Y.
+   * @return {boolean} Contains (x, y).
+   */
+
+
+  Circle.prototype.containsXY = function (x, y) {
+    var flatCoordinates = this.flatCoordinates;
+    var dx = x - flatCoordinates[0];
+    var dy = y - flatCoordinates[1];
+    return dx * dx + dy * dy <= this.getRadiusSquared_();
+  };
+  /**
+   * Return the center of the circle as {@link module:ol/coordinate~Coordinate coordinate}.
+   * @return {import("../coordinate.js").Coordinate} Center.
+   * @api
+   */
+
+
+  Circle.prototype.getCenter = function () {
+    return this.flatCoordinates.slice(0, this.stride);
+  };
+  /**
+   * @param {import("../extent.js").Extent} extent Extent.
+   * @protected
+   * @return {import("../extent.js").Extent} extent Extent.
+   */
+
+
+  Circle.prototype.computeExtent = function (extent) {
+    var flatCoordinates = this.flatCoordinates;
+    var radius = flatCoordinates[this.stride] - flatCoordinates[0];
+    return (0, _extent.createOrUpdate)(flatCoordinates[0] - radius, flatCoordinates[1] - radius, flatCoordinates[0] + radius, flatCoordinates[1] + radius, extent);
+  };
+  /**
+   * Return the radius of the circle.
+   * @return {number} Radius.
+   * @api
+   */
+
+
+  Circle.prototype.getRadius = function () {
+    return Math.sqrt(this.getRadiusSquared_());
+  };
+  /**
+   * @private
+   * @return {number} Radius squared.
+   */
+
+
+  Circle.prototype.getRadiusSquared_ = function () {
+    var dx = this.flatCoordinates[this.stride] - this.flatCoordinates[0];
+    var dy = this.flatCoordinates[this.stride + 1] - this.flatCoordinates[1];
+    return dx * dx + dy * dy;
+  };
+  /**
+   * Get the type of this geometry.
+   * @return {import("./GeometryType.js").default} Geometry type.
+   * @api
+   */
+
+
+  Circle.prototype.getType = function () {
+    return _GeometryType.default.CIRCLE;
+  };
+  /**
+   * Test if the geometry and the passed extent intersect.
+   * @param {import("../extent.js").Extent} extent Extent.
+   * @return {boolean} `true` if the geometry and the extent intersect.
+   * @api
+   */
+
+
+  Circle.prototype.intersectsExtent = function (extent) {
+    var circleExtent = this.getExtent();
+
+    if ((0, _extent.intersects)(extent, circleExtent)) {
+      var center = this.getCenter();
+
+      if (extent[0] <= center[0] && extent[2] >= center[0]) {
+        return true;
+      }
+
+      if (extent[1] <= center[1] && extent[3] >= center[1]) {
+        return true;
+      }
+
+      return (0, _extent.forEachCorner)(extent, this.intersectsCoordinate.bind(this));
+    }
+
+    return false;
+  };
+  /**
+   * Set the center of the circle as {@link module:ol/coordinate~Coordinate coordinate}.
+   * @param {import("../coordinate.js").Coordinate} center Center.
+   * @api
+   */
+
+
+  Circle.prototype.setCenter = function (center) {
+    var stride = this.stride;
+    var radius = this.flatCoordinates[stride] - this.flatCoordinates[0];
+    var flatCoordinates = center.slice();
+    flatCoordinates[stride] = flatCoordinates[0] + radius;
+
+    for (var i = 1; i < stride; ++i) {
+      flatCoordinates[stride + i] = center[i];
+    }
+
+    this.setFlatCoordinates(this.layout, flatCoordinates);
+    this.changed();
+  };
+  /**
+   * Set the center (as {@link module:ol/coordinate~Coordinate coordinate}) and the radius (as
+   * number) of the circle.
+   * @param {!import("../coordinate.js").Coordinate} center Center.
+   * @param {number} radius Radius.
+   * @param {import("./GeometryLayout.js").default=} opt_layout Layout.
+   * @api
+   */
+
+
+  Circle.prototype.setCenterAndRadius = function (center, radius, opt_layout) {
+    this.setLayout(opt_layout, center, 0);
+
+    if (!this.flatCoordinates) {
+      this.flatCoordinates = [];
+    }
+    /** @type {Array<number>} */
+
+
+    var flatCoordinates = this.flatCoordinates;
+    var offset = (0, _deflate.deflateCoordinate)(flatCoordinates, 0, center, this.stride);
+    flatCoordinates[offset++] = flatCoordinates[0] + radius;
+
+    for (var i = 1, ii = this.stride; i < ii; ++i) {
+      flatCoordinates[offset++] = flatCoordinates[i];
+    }
+
+    flatCoordinates.length = offset;
+    this.changed();
+  };
+
+  Circle.prototype.getCoordinates = function () {
+    return null;
+  };
+
+  Circle.prototype.setCoordinates = function (coordinates, opt_layout) {};
+  /**
+   * Set the radius of the circle. The radius is in the units of the projection.
+   * @param {number} radius Radius.
+   * @api
+   */
+
+
+  Circle.prototype.setRadius = function (radius) {
+    this.flatCoordinates[this.stride] = this.flatCoordinates[0] + radius;
+    this.changed();
+  };
+  /**
+   * Rotate the geometry around a given coordinate. This modifies the geometry
+   * coordinates in place.
+   * @param {number} angle Rotation angle in counter-clockwise radians.
+   * @param {import("../coordinate.js").Coordinate} anchor The rotation center.
+   * @api
+   */
+
+
+  Circle.prototype.rotate = function (angle, anchor) {
+    var center = this.getCenter();
+    var stride = this.getStride();
+    this.setCenter((0, _transform.rotate)(center, 0, center.length, stride, angle, anchor, center));
+    this.changed();
+  };
+  /**
+   * Translate the geometry.  This modifies the geometry coordinates in place.  If
+   * instead you want a new geometry, first `clone()` this geometry.
+   * @param {number} deltaX Delta X.
+   * @param {number} deltaY Delta Y.
+   * @api
+   */
+
+
+  Circle.prototype.translate = function (deltaX, deltaY) {
+    var center = this.getCenter();
+    var stride = this.getStride();
+    this.setCenter((0, _transform.translate)(center, 0, center.length, stride, deltaX, deltaY, center));
+    this.changed();
+  };
+
+  return Circle;
+}(_SimpleGeometry.default);
+/**
+ * Transform each coordinate of the circle from one coordinate reference system
+ * to another. The geometry is modified in place.
+ * If you do not want the geometry modified in place, first clone() it and
+ * then use this function on the clone.
+ *
+ * Internally a circle is currently represented by two points: the center of
+ * the circle `[cx, cy]`, and the point to the right of the circle
+ * `[cx + r, cy]`. This `transform` function just transforms these two points.
+ * So the resulting geometry is also a circle, and that circle does not
+ * correspond to the shape that would be obtained by transforming every point
+ * of the original circle.
+ *
+ * @param {import("../proj.js").ProjectionLike} source The current projection.  Can be a
+ *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
+ * @param {import("../proj.js").ProjectionLike} destination The desired projection.  Can be a
+ *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
+ * @return {Circle} This geometry.  Note that original geometry is
+ *     modified in place.
+ * @function
+ * @api
+ */
+
+
+Circle.prototype.transform;
+var _default = Circle;
+exports.default = _default;
+},{"./GeometryType.js":"node_modules/ol/geom/GeometryType.js","./SimpleGeometry.js":"node_modules/ol/geom/SimpleGeometry.js","../extent.js":"node_modules/ol/extent.js","./flat/deflate.js":"node_modules/ol/geom/flat/deflate.js","./flat/transform.js":"node_modules/ol/geom/flat/transform.js"}],"node_modules/rbush/rbush.min.js":[function(require,module,exports) {
 var define;
 !function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t=t||self).RBush=i()}(this,function(){"use strict";function t(t,r,e,a,h){!function t(n,r,e,a,h){for(;a>e;){if(a-e>600){var o=a-e+1,s=r-e+1,l=Math.log(o),f=.5*Math.exp(2*l/3),u=.5*Math.sqrt(l*f*(o-f)/o)*(s-o/2<0?-1:1),m=Math.max(e,Math.floor(r-s*f/o+u)),c=Math.min(a,Math.floor(r+(o-s)*f/o+u));t(n,r,m,c,h)}var p=n[r],d=e,x=a;for(i(n,e,r),h(n[a],p)>0&&i(n,e,a);d<x;){for(i(n,d,x),d++,x--;h(n[d],p)<0;)d++;for(;h(n[x],p)>0;)x--}0===h(n[e],p)?i(n,e,x):i(n,++x,a),x<=r&&(e=x+1),r<=x&&(a=x-1)}}(t,r,e||0,a||t.length-1,h||n)}function i(t,i,n){var r=t[i];t[i]=t[n],t[n]=r}function n(t,i){return t<i?-1:t>i?1:0}var r=function(t){void 0===t&&(t=9),this._maxEntries=Math.max(4,t),this._minEntries=Math.max(2,Math.ceil(.4*this._maxEntries)),this.clear()};function e(t,i,n){if(!n)return i.indexOf(t);for(var r=0;r<i.length;r++)if(n(t,i[r]))return r;return-1}function a(t,i){h(t,0,t.children.length,i,t)}function h(t,i,n,r,e){e||(e=p(null)),e.minX=1/0,e.minY=1/0,e.maxX=-1/0,e.maxY=-1/0;for(var a=i;a<n;a++){var h=t.children[a];o(e,t.leaf?r(h):h)}return e}function o(t,i){return t.minX=Math.min(t.minX,i.minX),t.minY=Math.min(t.minY,i.minY),t.maxX=Math.max(t.maxX,i.maxX),t.maxY=Math.max(t.maxY,i.maxY),t}function s(t,i){return t.minX-i.minX}function l(t,i){return t.minY-i.minY}function f(t){return(t.maxX-t.minX)*(t.maxY-t.minY)}function u(t){return t.maxX-t.minX+(t.maxY-t.minY)}function m(t,i){return t.minX<=i.minX&&t.minY<=i.minY&&i.maxX<=t.maxX&&i.maxY<=t.maxY}function c(t,i){return i.minX<=t.maxX&&i.minY<=t.maxY&&i.maxX>=t.minX&&i.maxY>=t.minY}function p(t){return{children:t,height:1,leaf:!0,minX:1/0,minY:1/0,maxX:-1/0,maxY:-1/0}}function d(i,n,r,e,a){for(var h=[n,r];h.length;)if(!((r=h.pop())-(n=h.pop())<=e)){var o=n+Math.ceil((r-n)/e/2)*e;t(i,o,n,r,a),h.push(n,o,o,r)}}return r.prototype.all=function(){return this._all(this.data,[])},r.prototype.search=function(t){var i=this.data,n=[];if(!c(t,i))return n;for(var r=this.toBBox,e=[];i;){for(var a=0;a<i.children.length;a++){var h=i.children[a],o=i.leaf?r(h):h;c(t,o)&&(i.leaf?n.push(h):m(t,o)?this._all(h,n):e.push(h))}i=e.pop()}return n},r.prototype.collides=function(t){var i=this.data;if(!c(t,i))return!1;for(var n=[];i;){for(var r=0;r<i.children.length;r++){var e=i.children[r],a=i.leaf?this.toBBox(e):e;if(c(t,a)){if(i.leaf||m(t,a))return!0;n.push(e)}}i=n.pop()}return!1},r.prototype.load=function(t){if(!t||!t.length)return this;if(t.length<this._minEntries){for(var i=0;i<t.length;i++)this.insert(t[i]);return this}var n=this._build(t.slice(),0,t.length-1,0);if(this.data.children.length)if(this.data.height===n.height)this._splitRoot(this.data,n);else{if(this.data.height<n.height){var r=this.data;this.data=n,n=r}this._insert(n,this.data.height-n.height-1,!0)}else this.data=n;return this},r.prototype.insert=function(t){return t&&this._insert(t,this.data.height-1),this},r.prototype.clear=function(){return this.data=p([]),this},r.prototype.remove=function(t,i){if(!t)return this;for(var n,r,a,h=this.data,o=this.toBBox(t),s=[],l=[];h||s.length;){if(h||(h=s.pop(),r=s[s.length-1],n=l.pop(),a=!0),h.leaf){var f=e(t,h.children,i);if(-1!==f)return h.children.splice(f,1),s.push(h),this._condense(s),this}a||h.leaf||!m(h,o)?r?(n++,h=r.children[n],a=!1):h=null:(s.push(h),l.push(n),n=0,r=h,h=h.children[0])}return this},r.prototype.toBBox=function(t){return t},r.prototype.compareMinX=function(t,i){return t.minX-i.minX},r.prototype.compareMinY=function(t,i){return t.minY-i.minY},r.prototype.toJSON=function(){return this.data},r.prototype.fromJSON=function(t){return this.data=t,this},r.prototype._all=function(t,i){for(var n=[];t;)t.leaf?i.push.apply(i,t.children):n.push.apply(n,t.children),t=n.pop();return i},r.prototype._build=function(t,i,n,r){var e,h=n-i+1,o=this._maxEntries;if(h<=o)return a(e=p(t.slice(i,n+1)),this.toBBox),e;r||(r=Math.ceil(Math.log(h)/Math.log(o)),o=Math.ceil(h/Math.pow(o,r-1))),(e=p([])).leaf=!1,e.height=r;var s=Math.ceil(h/o),l=s*Math.ceil(Math.sqrt(o));d(t,i,n,l,this.compareMinX);for(var f=i;f<=n;f+=l){var u=Math.min(f+l-1,n);d(t,f,u,s,this.compareMinY);for(var m=f;m<=u;m+=s){var c=Math.min(m+s-1,u);e.children.push(this._build(t,m,c,r-1))}}return a(e,this.toBBox),e},r.prototype._chooseSubtree=function(t,i,n,r){for(;r.push(i),!i.leaf&&r.length-1!==n;){for(var e=1/0,a=1/0,h=void 0,o=0;o<i.children.length;o++){var s=i.children[o],l=f(s),u=(m=t,c=s,(Math.max(c.maxX,m.maxX)-Math.min(c.minX,m.minX))*(Math.max(c.maxY,m.maxY)-Math.min(c.minY,m.minY))-l);u<a?(a=u,e=l<e?l:e,h=s):u===a&&l<e&&(e=l,h=s)}i=h||i.children[0]}var m,c;return i},r.prototype._insert=function(t,i,n){var r=n?t:this.toBBox(t),e=[],a=this._chooseSubtree(r,this.data,i,e);for(a.children.push(t),o(a,r);i>=0&&e[i].children.length>this._maxEntries;)this._split(e,i),i--;this._adjustParentBBoxes(r,e,i)},r.prototype._split=function(t,i){var n=t[i],r=n.children.length,e=this._minEntries;this._chooseSplitAxis(n,e,r);var h=this._chooseSplitIndex(n,e,r),o=p(n.children.splice(h,n.children.length-h));o.height=n.height,o.leaf=n.leaf,a(n,this.toBBox),a(o,this.toBBox),i?t[i-1].children.push(o):this._splitRoot(n,o)},r.prototype._splitRoot=function(t,i){this.data=p([t,i]),this.data.height=t.height+1,this.data.leaf=!1,a(this.data,this.toBBox)},r.prototype._chooseSplitIndex=function(t,i,n){for(var r,e,a,o,s,l,u,m=1/0,c=1/0,p=i;p<=n-i;p++){var d=h(t,0,p,this.toBBox),x=h(t,p,n,this.toBBox),v=(e=d,a=x,o=void 0,s=void 0,l=void 0,u=void 0,o=Math.max(e.minX,a.minX),s=Math.max(e.minY,a.minY),l=Math.min(e.maxX,a.maxX),u=Math.min(e.maxY,a.maxY),Math.max(0,l-o)*Math.max(0,u-s)),M=f(d)+f(x);v<m?(m=v,r=p,c=M<c?M:c):v===m&&M<c&&(c=M,r=p)}return r||n-i},r.prototype._chooseSplitAxis=function(t,i,n){var r=t.leaf?this.compareMinX:s,e=t.leaf?this.compareMinY:l;this._allDistMargin(t,i,n,r)<this._allDistMargin(t,i,n,e)&&t.children.sort(r)},r.prototype._allDistMargin=function(t,i,n,r){t.children.sort(r);for(var e=this.toBBox,a=h(t,0,i,e),s=h(t,n-i,n,e),l=u(a)+u(s),f=i;f<n-i;f++){var m=t.children[f];o(a,t.leaf?e(m):m),l+=u(a)}for(var c=n-i-1;c>=i;c--){var p=t.children[c];o(s,t.leaf?e(p):p),l+=u(s)}return l},r.prototype._adjustParentBBoxes=function(t,i,n){for(var r=n;r>=0;r--)o(i[r],t)},r.prototype._condense=function(t){for(var i=t.length-1,n=void 0;i>=0;i--)0===t[i].children.length?i>0?(n=t[i-1].children).splice(n.indexOf(t[i]),1):this.clear():a(t[i],this.toBBox)},r});
 
@@ -93886,10 +93886,6 @@ module.exports = {
 
 require("ol/ol.css");
 
-var _Circle = _interopRequireDefault(require("ol/geom/Circle"));
-
-var _Feature = _interopRequireDefault(require("ol/Feature"));
-
 var _GeoJSON = _interopRequireDefault(require("ol/format/GeoJSON"));
 
 var _Map = _interopRequireDefault(require("ol/Map"));
@@ -93902,7 +93898,7 @@ var _source = require("ol/source");
 
 var _layer = require("ol/layer");
 
-var _Projection = _interopRequireDefault(require("ol/proj/Projection"));
+var _TileWMS = _interopRequireDefault(require("ol/source/TileWMS"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -93936,17 +93932,42 @@ var vectorLayer = new _layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
+var layers = [new _layer.Tile({
+  source: new _source.OSM()
+}), new _layer.Tile({
+  extent: [307150.05, 6550960.68, 829007.57, 7141345.42],
+  source: new _TileWMS.default({
+    url: 'http://localhost:8080/geoserver/energieNL/wms',
+    params: {
+      'LAYERS': 'energieNL:zonurenNL',
+      'TILED': true
+    },
+    serverType: 'geoserver',
+    transition: 0,
+    visible: true
+  })
+}), new _layer.Tile({
+  extent: [307150.05, 6550960.68, 829007.57, 7141345.42],
+  source: new _TileWMS.default({
+    url: 'http://localhost:8080/geoserver/energieNL/wms',
+    params: {
+      'LAYERS': 'energieNL:Plaatsen',
+      'TILED': true
+    },
+    serverType: 'geoserver',
+    transition: 0,
+    visible: true
+  })
+})];
 var map = new _Map.default({
-  layers: [new _layer.Tile({
-    source: new _source.OSM()
-  }), vectorLayer],
+  layers: layers,
   target: 'olmap',
   view: new _View.default({
     center: [579076.15, 6862209.10],
     zoom: 7
   })
 });
-},{"ol/ol.css":"node_modules/ol/ol.css","ol/geom/Circle":"node_modules/ol/geom/Circle.js","ol/Feature":"node_modules/ol/Feature.js","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -93974,7 +93995,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56056" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62600" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

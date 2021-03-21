@@ -1,13 +1,11 @@
 import 'ol/ol.css';
-import Circle from 'ol/geom/Circle';
-import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
-import Projection from 'ol/proj/Projection';
+import TileWMS from 'ol/source/TileWMS';
 
 var styles = {
   'Polygon': new Style({
@@ -42,12 +40,34 @@ var vectorLayer = new VectorLayer({
   style: styleFunction,
 });
 
-var map = new Map({
-  layers: [
-    new TileLayer({
-      source: new OSM(),
+var layers = [
+  new TileLayer({
+    source: new OSM(),
+  }),
+  new TileLayer({
+    extent: [307150.05, 6550960.68, 829007.57, 7141345.42],
+    source: new TileWMS({
+      url: 'http://localhost:8080/geoserver/energieNL/wms',
+      params: {'LAYERS': 'energieNL:zonurenNL', 'TILED': true},
+      serverType: 'geoserver',
+      transition: 0,
+      visible: true
     }),
-    vectorLayer],
+  }),
+  new TileLayer({
+    extent: [307150.05, 6550960.68, 829007.57, 7141345.42],
+    source: new TileWMS({
+      url: 'http://localhost:8080/geoserver/energieNL/wms',
+      params: {'LAYERS': 'energieNL:Plaatsen', 'TILED': true},
+      serverType: 'geoserver',
+      transition: 0,
+      visible: true
+    }),
+  }),
+];
+
+var map = new Map({
+  layers: layers, 
   target: 'olmap',
   view: new View({
     center: [579076.15, 6862209.10],

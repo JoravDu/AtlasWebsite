@@ -125,21 +125,21 @@ window.addEventListener('load', function (event) {
     data: {
       labels: "Zon",
       datasets: [{
-        label: ["Lissabon"],
-        backgroundColor: "rgba(166,206,227,1)",
+        label: ["Almere"],
+        backgroundColor: "rgba(166,206,227,0.2)",
         borderColor: "rgba(166,206,227,1)",
         data: [{
-          x: 38.68,
-          y: 2799,
+          x: 52.35,
+          y: 1650,
           r: 30
         }]
       }, {
-        label: ["Londen"],
-        backgroundColor: "rgba(31,120,180,1)",
+        label: ["Amersfoort"],
+        backgroundColor: "rgba(31,120,180,0.2)",
         borderColor: "rgba(31,120,180,1)",
         data: [{
-          x: 51.52,
-          y: 1410,
+          x: 52.15,
+          y: 1590,
           r: 30
         }]
       }, {
@@ -147,89 +147,53 @@ window.addEventListener('load', function (event) {
         backgroundColor: "rgba(178,223,138,0.2)",
         borderColor: "rgba(178,223,138,1)",
         data: [{
-          x: 52.36,
-          y: 1524,
+          x: 52.37,
+          y: 1670,
+          r: 15
+        }]
+      }, {
+        label: ["Den Burg"],
+        backgroundColor: "rgba(51,160,44,0.2)",
+        borderColor: "rgba(51,160,44,1)",
+        data: [{
+          x: 53.05,
+          y: 1620,
+          r: 15
+        }]
+      }, {
+        label: ["Groningen"],
+        backgroundColor: "rgba(227,26,28,0.2)",
+        borderColor: "rgba(227,26,28,1)",
+        data: [{
+          x: 53.21,
+          y: 1540,
+          r: 15
+        }]
+      }, {
+        label: ["Krommenie"],
+        backgroundColor: "rgba(253,191,111,0.2)",
+        borderColor: "rgba(253,191,111,1)",
+        data: [{
+          x: 52.5,
+          y: 1640,
           r: 15
         }]
       }, {
         label: ["Maastricht"],
-        backgroundColor: "rgba(51,160,44,0.2)",
-        borderColor: "rgba(51,160,44,1)",
-        data: [{
-          x: 50.84,
-          y: 1703,
-          r: 15
-        }]
-      }, {
-        label: ["Marseille"],
-        backgroundColor: "rgba(251,154,153,0.2)",
-        borderColor: "rgba(251,154,153,1)",
-        data: [{
-          x: 43.28,
-          y: 2858,
-          r: 15
-        }]
-      }, {
-        label: ["Madrid"],
-        backgroundColor: "rgba(227,26,28,0.2)",
-        borderColor: "rgba(227,26,28,1)",
-        data: [{
-          x: 40.43,
-          y: 2769,
-          r: 15
-        }]
-      }, {
-        label: ["Barcelona"],
-        backgroundColor: "rgba(253,191,111,0.2)",
-        borderColor: "rgba(253,191,111,1)",
-        data: [{
-          x: 41.39,
-          y: 2524,
-          r: 15
-        }]
-      }, {
-        label: ["Brussel"],
         backgroundColor: "rgba(255,127,0,0.2)",
         borderColor: "rgba(255,127,0,1)",
         data: [{
           x: 50.85,
-          y: 1546,
+          y: 1530,
           r: 15
         }]
       }, {
-        label: ["Athene"],
+        label: ["Rotterdam"],
         backgroundColor: "rgba(202,178,214,0.2)",
         borderColor: "rgba(202,178,214,1)",
         data: [{
-          x: 37.99,
-          y: 2771,
-          r: 15
-        }]
-      }, {
-        label: ["Dublin"],
-        backgroundColor: "rgba(106,61,154,0.2)",
-        borderColor: "rgba(106,61,154,1)",
-        data: [{
-          x: 53.32,
-          y: 1424,
-          r: 15
-        }]
-      }, {
-        label: ["Hamburg"],
-        backgroundColor: "rgba(255,255,153,0.5)",
-        borderColor: "rgba(255,255,153,1)",
-        data: [{
-          x: 53.55,
-          y: 1557,
-          r: 15
-        }]
-      }, {
-        label: ["Birmingham"],
-        backgroundColor: "rgba(177,89,40,0.2)",
-        borderColor: "rgba(177,89,40,1)",
-        data: [{
-          x: 52.47,
-          y: 1364,
+          x: 51.92,
+          y: 1590,
           r: 15
         }]
       }]
@@ -245,7 +209,7 @@ window.addEventListener('load', function (event) {
       },
       title: {
         display: true,
-        text: 'Zonuren en ligging op de aarde'
+        text: 'De ligging van in Nederland en het gemiddelde aantal zonuren'
       },
       scales: {
         yAxes: [{
@@ -294,7 +258,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56056" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62600" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
