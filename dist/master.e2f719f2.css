@@ -57,6 +57,12 @@
     padding: 2.5% 20%;
 }
 
+.p2-chart {
+    width: 70%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
 /* Javascript */
 #olmap {
     height: 600px;
