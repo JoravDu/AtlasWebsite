@@ -117,79 +117,80 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"js/leaflet/leaflet.js":[function(require,module,exports) {
+var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+  minZoom: 0,
+  maxZoom: 20,
+  ext: 'png'
+}),
+    mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+  //Hier hoef je geen VAR voor te zetten, 
+  maxZoom: 18,
+  //JavaScript snapt dat dit twee verschillende variabelen zijn
+  id: 'mapbox/satellite-v9',
+  accessToken: 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw' //<--- Vul hier svp eigen Mapbox Token toe :)
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
+});
+var map = L.map('leaflet-kaart', {
+  //<--- Hier declareer je de kaart en het DIV-ID(HTML) waar de kaart naar moet refereren
+  center: [52.3420431, 5.2019296],
+  //<--- Hier geef je het centrum van de kaart aan
+  zoom: 7,
+  //<--- Hier geef je het zoomniveau aan van je kaart (waar je begint)
+  layers: [Stamen_Toner] //<--- Hier declareer je de basemap (welke leaflet als eerste moet laten zien) <--- Verander eens naar mapboxSatellite
 
-  return bundleURL;
-}
+}); // map.touchZoom.disable(); // <--- Dit schakelt het zoomen met vingers uit op de kaart
+// map.scrollWheelZoom.disable(); // <--- Dit schakelt het zoomen met je scrollwheel in
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+var baseMaps = {
+  // Hier declareer je groep voor je basemaps. Er kunnen er meerdere staam
+  "Wereldkaart": Stamen_Toner,
+  // Dit is de eerste basemap 
+  "Mapbox": mapboxSatellite // Dit is de tweede basemap
 
-    if (matches) {
-      return getBaseURL(matches[0]);
+}; // Layers <-- Hier voeg je lagen toe aan Leaflet
+
+var kaartlaag = {
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[4.85321044921875, 52.44261787120725], [4.7406005859375, 52.3688917060255], [5.01251220703125, 52.38565847278254], [4.91363525390625, 52.22611704066942], [5.33111572265625, 52.18403686498285], [5.2734375, 52.45600939264076], [4.85321044921875, 52.44261787120725]]]
     }
+  }]
+};
+var kaart = L.geoJson(kaartlaag, {
+  style: function style(feature) {
+    // Hier geef je aan wat de functie, de feature, voor uiterlijk moet krijgen
+    return {
+      // Hier geef je aan wat er teruggegeven moet worden door de javascript 
+      fillColor: '#43429C',
+      weight: 0.5,
+      fillOpacity: 0.5
+    };
   }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"css/master.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+}).addTo(map);
+var energieKaart = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
+  layers: 'zonurenNL',
+  transparent: true,
+  format: 'image/png'
+}).addTo(map);
+var energiePlaatsen = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
+  layers: 'Plaatsen',
+  transparent: true,
+  format: 'image/png'
+}).addTo(map);
+var toggleLaag = {
+  "GeoJSON": kaart,
+  "Plaatsen WMS": energiePlaatsen,
+  "Kaart WMS": energieKaart
+};
+L.control.layers(baseMaps, toggleLaag).addTo(map); // ^^^ Dit regelt de controls op je kaart, hier voor je (als je meerdere basemaps hebt) de basemaps toe
+// maar als je er één hebt hoeft dat niet. Als je meerdere lagen weer wilt geven
+// voeg je hier de toggleLaag toe.
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +394,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/master.e2f719f2.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/leaflet/leaflet.js"], null)
+//# sourceMappingURL=/leaflet.40137b53.js.map

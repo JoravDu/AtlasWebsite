@@ -76,3 +76,14 @@
     height: 600px;
     width: 100%;
 }
+
+#mapbox {
+    margin-top: 50px;
+    width: 50%;
+    height: 400px;
+    position: absolute;
+}
+#leaflet-kaart {
+    height: 400px !important;
+    width: 50% !important;
+}

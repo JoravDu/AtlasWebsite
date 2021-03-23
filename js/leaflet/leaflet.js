@@ -2,8 +2,8 @@ var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/
     minZoom: 0,
     maxZoom: 20,
     ext: 'png'
-});
-mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {   //Hier hoef je geen VAR voor te zetten, 
+}),
+    mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {   //Hier hoef je geen VAR voor te zetten, 
     maxZoom: 18,                                                                                                        //JavaScript snapt dat dit twee verschillende variabelen zijn
     id: 'mapbox/satellite-v9',
     accessToken: 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw' //<--- Vul hier svp eigen Mapbox Token toe :)
@@ -15,8 +15,8 @@ var map = L.map('leaflet-kaart', {              //<--- Hier declareer je de kaar
     layers: [Stamen_Toner]              //<--- Hier declareer je de basemap (welke leaflet als eerste moet laten zien) <--- Verander eens naar mapboxSatellite
 });
 
-map.touchZoom.disable(); // <--- Dit schakelt het zoomen met vingers uit op de kaart
-map.scrollWheelZoom.disable(); // <--- Dit schakelt het zoomen met je scrollwheel in
+// map.touchZoom.disable(); // <--- Dit schakelt het zoomen met vingers uit op de kaart
+// map.scrollWheelZoom.disable(); // <--- Dit schakelt het zoomen met je scrollwheel in
 
 var baseMaps = {                    // Hier declareer je groep voor je basemaps. Er kunnen er meerdere staam
     "Wereldkaart": Stamen_Toner,    // Dit is de eerste basemap 
@@ -79,11 +79,29 @@ var kaart = L.geoJson(kaartlaag, {
     }
 }).addTo(map);
 
+var energieKaart = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
+    layers: 'zonurenNL',
+    transparent: true,
+    format: 'image/png'
+}).addTo(map);
+
+
+var energiePlaatsen = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
+    layers: 'Plaatsen',
+    transparent: true,
+    format: 'image/png'
+}).addTo(map);
+
+
 var toggleLaag = {
-    "GeoJSON": kaart
+    "GeoJSON": kaart,
+    "Plaatsen WMS": energiePlaatsen,
+    "Kaart WMS": energieKaart
 }
 
 L.control.layers(baseMaps, toggleLaag).addTo(map);  
     // ^^^ Dit regelt de controls op je kaart, hier voor je (als je meerdere basemaps hebt) de basemaps toe
     // maar als je er één hebt hoeft dat niet. Als je meerdere lagen weer wilt geven
     // voeg je hier de toggleLaag toe.
+
+    
