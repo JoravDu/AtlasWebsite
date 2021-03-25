@@ -76,7 +76,7 @@ var map = new Map({
   target: 'olmap',
   view: new View({
     center: [579076.15, 6862209.10],
-    zoom: 7,
+    zoom: 8,
   }),
 });
 

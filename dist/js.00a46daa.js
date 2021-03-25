@@ -93969,7 +93969,7 @@ var map = new _Map.default({
   target: 'olmap',
   view: new _View.default({
     center: [579076.15, 6862209.10],
-    zoom: 7
+    zoom: 8
   })
 }); // map.addControl(new ol.control.LayerSwitcher());
 },{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","ol/control":"node_modules/ol/control.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

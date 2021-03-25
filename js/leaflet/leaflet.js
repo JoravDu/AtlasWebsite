@@ -11,7 +11,7 @@ var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/
 
 var map = L.map('leaflet-kaart', {      
     center: [52.3420431, 5.2019296],    
-    zoom: 7,                            
+    zoom: 6,                            
     layers: [Stamen_Toner]              
 });
 
