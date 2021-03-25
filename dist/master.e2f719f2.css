@@ -49,12 +49,14 @@
     height: 60px;
 }
 
-.p2-box {
+.p2-box,
+.p3-box {
     height: 800px;
     width: 100%;
 }
 
-.p2-map {
+.p2-map,
+.p3-map {
     width: 70%;
     padding-left: 15%;
     padding-right: 15%;
@@ -72,20 +74,16 @@
 }
 
 /* Javascript */
+#leaflet-kaart,
 #olmap {
     height: 600px;
     width: 100%;
 }
 
 #mapbox {
-    margin-top: 50px;
-    width: 50%;
-    height: 400px;
-    position: absolute;
+    width: 100%;
+    height: 600px;
 }
-#leaflet-kaart {
-    height: 400px !important;
-    width: 50% !important;
-}
+
 
 /*# sourceMappingURL=/master.e2f719f2.css.map */

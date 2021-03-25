@@ -18,11 +18,11 @@
 
     <!-- JavaScript -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
     <script src="data/windmolens.geojson" defer></script>
- 
+
     <title>Mapbox is kut</title>
 </head>
 
@@ -33,11 +33,17 @@
         <a class="active" href="#">WindNL</a>
         <a href="#">Hoi</a>
     </div>
-    
     <div class="invc-blck-60"></div>
-    <div id="leaflet-kaart"></div>
-    <div class="invc-blck-60"></div>
-    <div id='mapbox'></div>
+    <div class="p3-box">
+        <h1 class="xl-header-c">Wind in Nederland</h1>
+        <div class="p3-map">
+            <div id="leaflet-kaart"></div>
+        </div>
+        <div class="invc-blck-60"></div>
+        <div class="p3-map">
+            <div id='mapbox'></div>
+        </div>
+    </div>
 
     <script src="js/mapbox/mapbox.js" defer></script>
     <script src="js/leaflet/leaflet.js" defer></script>

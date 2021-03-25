@@ -118,10 +118,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"js/leaflet/leaflet.js":[function(require,module,exports) {
-var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-  minZoom: 0,
-  maxZoom: 20,
-  ext: 'png'
+var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19
 }),
     mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
   maxZoom: 18,
@@ -129,14 +127,14 @@ var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/
   accessToken: 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw'
 });
 var map = L.map('leaflet-kaart', {
-  center: [52.3420431, 5.2019296],
-  zoom: 6,
-  layers: [Stamen_Toner]
+  center: [52.7420431, 5.2019296],
+  zoom: 7,
+  layers: [CartoDB_DarkMatter]
 }); // map.touchZoom.disable(); 
 // map.scrollWheelZoom.disable(); 
 
 var baseMaps = {
-  "Wereldkaart": Stamen_Toner,
+  "Wereldkaart": CartoDB_DarkMatter,
   "Mapbox": mapboxSatellite
 }; // Layers <-- Hier voeg je lagen toe aan Leaflet
 
@@ -163,15 +161,20 @@ var kaart = {
     }
   }]
 };
+var kaartlaag = L.geoJson(kaart, {
+  style: function style(feature) {
+    return {
+      fillColor: '#43429C',
+      weight: 0.5,
+      fillOpacity: 0.5
+    };
+  }
+}).addTo(map);
 var toggleLaag = {
-  "Windmolens": windmolens
+  "Windmolens": windmolens,
+  "kaart": kaartlaag
 };
 L.control.layers(baseMaps, toggleLaag).addTo(map);
-var iconWind = {
-  iconURL: 'js/leaflet/molen.png',
-  iconSize: [30, 60],
-  iconAnchor: [0, 0]
-};
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -200,7 +203,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54785" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55177" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
