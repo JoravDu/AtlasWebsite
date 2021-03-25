@@ -20,6 +20,7 @@
   "homepage": "https://github.com/JoravDu/AtlasWebsite#readme",
   "dependencies": {
     "data": "^0.6.1",
+    "is-svg": "^4.3.1",
     "npm": "^7.7.4",
     "ol": "^6.5.0",
     "ol-hashed": "^2.0.0"
