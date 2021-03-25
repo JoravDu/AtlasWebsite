@@ -93900,6 +93900,8 @@ var _layer = require("ol/layer");
 
 var _TileWMS = _interopRequireDefault(require("ol/source/TileWMS"));
 
+var _control = require("ol/control");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
@@ -93958,6 +93960,9 @@ var layers = [new _layer.Tile({
     transition: 0,
     visible: true
   })
+}), vectorLayer = new _layer.Vector({
+  source: vectorSource,
+  style: styleFunction
 })];
 var map = new _Map.default({
   layers: layers,
@@ -93966,8 +93971,8 @@ var map = new _Map.default({
     center: [579076.15, 6862209.10],
     zoom: 7
   })
-});
-},{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+}); // map.addControl(new ol.control.LayerSwitcher());
+},{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","ol/control":"node_modules/ol/control.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -93995,7 +94000,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50720" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51772" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -3,28 +3,42 @@ var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/
     maxZoom: 20,
     ext: 'png'
 }),
-    mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {   //Hier hoef je geen VAR voor te zetten, 
-    maxZoom: 18,                                                                                                        //JavaScript snapt dat dit twee verschillende variabelen zijn
-    id: 'mapbox/satellite-v9',
-    accessToken: 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw' //<--- Vul hier svp eigen Mapbox Token toe :)
+    mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {   
+        maxZoom: 18,                                                                                                        
+        id: 'mapbox/satellite-v9',
+        accessToken: 'pk.eyJ1Ijoiam9yYW52ZHVpbiIsImEiOiJjam53d2k5a3EwZzdhM3FucTByaDRrMzQwIn0.sCAmQZysagzU2t82TJiRkw' 
+    });
+
+var map = L.map('leaflet-kaart', {      
+    center: [52.3420431, 5.2019296],    
+    zoom: 7,                            
+    layers: [Stamen_Toner]              
 });
 
-var map = L.map('leaflet-kaart', {              //<--- Hier declareer je de kaart en het DIV-ID(HTML) waar de kaart naar moet refereren
-    center: [52.3420431, 5.2019296],    //<--- Hier geef je het centrum van de kaart aan
-    zoom: 7,                            //<--- Hier geef je het zoomniveau aan van je kaart (waar je begint)
-    layers: [Stamen_Toner]              //<--- Hier declareer je de basemap (welke leaflet als eerste moet laten zien) <--- Verander eens naar mapboxSatellite
-});
+// map.touchZoom.disable(); 
+// map.scrollWheelZoom.disable(); 
 
-// map.touchZoom.disable(); // <--- Dit schakelt het zoomen met vingers uit op de kaart
-// map.scrollWheelZoom.disable(); // <--- Dit schakelt het zoomen met je scrollwheel in
-
-var baseMaps = {                    // Hier declareer je groep voor je basemaps. Er kunnen er meerdere staam
-    "Wereldkaart": Stamen_Toner,    // Dit is de eerste basemap 
-    "Mapbox": mapboxSatellite       // Dit is de tweede basemap
+var baseMaps = {                    
+    "Wereldkaart": Stamen_Toner,    
+    "Mapbox": mapboxSatellite       
 };
 
 // Layers <-- Hier voeg je lagen toe aan Leaflet
-var kaartlaag = {
+var iconWind = {
+    iconURL: 'js/leaflet/molen.png',
+    iconSize: [12, 30],
+    iconAnchor: [0,0]
+}
+
+var windmolens = L.geoJson(molens, {
+    style: function (feature) {        
+        return L.marker({                       
+            icon: iconWind
+        })
+    }
+}).addTo(map);
+
+var kaart = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -69,39 +83,14 @@ var kaartlaag = {
     ]
 }
 
-var kaart = L.geoJson(kaartlaag, {
-    style: function (feature) {        // Hier geef je aan wat de functie, de feature, voor uiterlijk moet krijgen
-        return {                       // Hier geef je aan wat er teruggegeven moet worden door de javascript 
-            fillColor: '#43429C',
-            weight: 0.5,
-            fillOpacity: 0.5
-        }
-    }
-}).addTo(map);
-
-var energieKaart = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
-    layers: 'zonurenNL',
-    transparent: true,
-    format: 'image/png'
-}).addTo(map);
-
-
-var energiePlaatsen = L.tileLayer.wms('http://localhost:8080/geoserver/energieNL/wms', {
-    layers: 'Plaatsen',
-    transparent: true,
-    format: 'image/png'
-}).addTo(map);
-
-
 var toggleLaag = {
-    "GeoJSON": kaart,
-    "Plaatsen WMS": energiePlaatsen,
-    "Kaart WMS": energieKaart
+    "Windmolens": windmolens
 }
 
-L.control.layers(baseMaps, toggleLaag).addTo(map);  
-    // ^^^ Dit regelt de controls op je kaart, hier voor je (als je meerdere basemaps hebt) de basemaps toe
-    // maar als je er één hebt hoeft dat niet. Als je meerdere lagen weer wilt geven
-    // voeg je hier de toggleLaag toe.
+L.control.layers(baseMaps, toggleLaag).addTo(map);
 
-    
+var iconWind = {
+    iconURL: 'js/leaflet/molen.png',
+    iconSize: [30, 60],
+    iconAnchor: [0,0]
+}

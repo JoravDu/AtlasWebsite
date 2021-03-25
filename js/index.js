@@ -6,6 +6,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import TileWMS from 'ol/source/TileWMS';
+import {Control, defaults as defaultControls} from 'ol/control';
 
 var styles = {
   'Polygon': new Style({
@@ -64,6 +65,10 @@ var layers = [
       visible: true
     }),
   }),
+  vectorLayer = new VectorLayer({
+    source: vectorSource,
+    style: styleFunction,
+  }),
 ];
 
 var map = new Map({
@@ -74,3 +79,5 @@ var map = new Map({
     zoom: 7,
   }),
 });
+
+// map.addControl(new ol.control.LayerSwitcher());
