@@ -11,12 +11,12 @@ import {Control, defaults as defaultControls} from 'ol/control';
 var styles = {
   'Polygon': new Style({
     stroke: new Stroke({
-      color: 'blue',
+      color: 'rgba(255, 131, 0, 1)',
       lineDash: [5],
       width: 3,
     }),
     fill: new Fill({
-      color: 'rgba(0, 0, 255, 0.1)',
+      color: 'rgba(254, 185, 144, 0.3)',
     }),
   }),
 };
@@ -25,7 +25,7 @@ var styleFunction = function (feature) {
   return styles[feature.getGeometry().getType()];
 };
 
-const data = require('/data/geojson.json')
+const data = require('/data/meestezonneuren.json')
 var geojsonObject = data;
 
 var vectorSource = new VectorSource({

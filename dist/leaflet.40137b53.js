@@ -138,44 +138,76 @@ var baseMaps = {
   "Mapbox": mapboxSatellite
 }; // Layers <-- Hier voeg je lagen toe aan Leaflet
 
-var iconWind = {
-  iconURL: 'js/leaflet/molen.png',
-  iconSize: [12, 30],
-  iconAnchor: [0, 0]
+var windIcon = {
+  radius: 4,
+  fillColor: "#cb0000",
+  weight: 1,
+  opacity: 1,
+  fillOpacity: 1
 };
 var windmolens = L.geoJson(molens, {
-  style: function style(feature) {
-    return L.marker({
-      icon: iconWind
-    });
+  pointToLayer: function pointToLayer(feature, latlng) {
+    return L.circleMarker(latlng, windIcon);
   }
-}).addTo(map);
-var kaart = {
-  "type": "FeatureCollection",
-  "features": [{
-    "type": "Feature",
-    "properties": {},
-    "geometry": {
-      "type": "Polygon",
-      "coordinates": [[[4.85321044921875, 52.44261787120725], [4.7406005859375, 52.3688917060255], [5.01251220703125, 52.38565847278254], [4.91363525390625, 52.22611704066942], [5.33111572265625, 52.18403686498285], [5.2734375, 52.45600939264076], [4.85321044921875, 52.44261787120725]]]
-    }
-  }]
-};
-var kaartlaag = L.geoJson(kaart, {
-  style: function style(feature) {
-    return {
-      fillColor: '#43429C',
-      weight: 0.5,
-      fillOpacity: 0.5
-    };
-  }
-}).addTo(map);
+}).addTo(map); // var kaart = {
+//     "type": "FeatureCollection",
+//     "features": [
+//         {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "Polygon",
+//                 "coordinates": [
+//                     [
+//                         [
+//                             4.85321044921875,
+//                             52.44261787120725
+//                         ],
+//                         [
+//                             4.7406005859375,
+//                             52.3688917060255
+//                         ],
+//                         [
+//                             5.01251220703125,
+//                             52.38565847278254
+//                         ],
+//                         [
+//                             4.91363525390625,
+//                             52.22611704066942
+//                         ],
+//                         [
+//                             5.33111572265625,
+//                             52.18403686498285
+//                         ],
+//                         [
+//                             5.2734375,
+//                             52.45600939264076
+//                         ],
+//                         [
+//                             4.85321044921875,
+//                             52.44261787120725
+//                         ]
+//                     ]
+//                 ]
+//             }
+//         }
+//     ]
+// }
+// var kaartlaag = L.geoJson(kaart, {
+//     style: function (feature) {
+//         return {
+//             fillColor: '#43429C',
+//             weight: 0.5,
+//             fillOpacity: 0.5
+//         }
+//     }
+// }).addTo(map);
+
 var toggleLaag = {
-  "Windmolens": windmolens,
-  "kaart": kaartlaag
+  "Windmolens": windmolens
 };
 L.control.layers(baseMaps, toggleLaag).addTo(map);
-},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -203,7 +235,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55177" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50412" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -379,5 +411,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/leaflet/leaflet.js"], null)
+},{}]},{},["../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/leaflet/leaflet.js"], null)
 //# sourceMappingURL=/leaflet.40137b53.js.map

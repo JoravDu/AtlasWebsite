@@ -117,80 +117,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"node_modules/ol/ol.css":[function(require,module,exports) {
+})({"node_modules/ol/ol.css":[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/ol/events/Event.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/ol/events/Event.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -72724,7 +72657,7 @@ module.exports = function(fonts, size, lineHeight) {
   return cssData[0] + sp + cssData[1] + sp + size + 'px' + (lineHeight ? '/' + lineHeight : '') + sp + cssData[2];
 };
 
-},{}],"node_modules/base64-js/index.js":[function(require,module,exports) {
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/base64-js/index.js":[function(require,module,exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -72876,14 +72809,101 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],"node_modules/isarray/index.js":[function(require,module,exports) {
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/ieee754/index.js":[function(require,module,exports) {
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/isarray/index.js":[function(require,module,exports) {
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],"node_modules/buffer/index.js":[function(require,module,exports) {
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/buffer/index.js":[function(require,module,exports) {
 
 var global = arguments[3];
 /*!
@@ -74676,7 +74696,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":"node_modules/base64-js/index.js","ieee754":"node_modules/ieee754/index.js","isarray":"node_modules/isarray/index.js","buffer":"node_modules/buffer/index.js"}],"node_modules/@mapbox/mapbox-gl-style-spec/dist/index.es.js":[function(require,module,exports) {
+},{"base64-js":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/base64-js/index.js","ieee754":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/ieee754/index.js","isarray":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/isarray/index.js","buffer":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"node_modules/@mapbox/mapbox-gl-style-spec/dist/index.es.js":[function(require,module,exports) {
 var global = arguments[3];
 var Buffer = require("buffer").Buffer;
 "use strict";
@@ -89412,7 +89432,7 @@ const visit = {
 exports.visit = visit;
 validateStyle.parsed = validateStyle;
 validateStyle.latest = validateStyle;
-},{"buffer":"node_modules/buffer/index.js"}],"node_modules/ol-mapbox-style/dist/util.js":[function(require,module,exports) {
+},{"buffer":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"node_modules/ol-mapbox-style/dist/util.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -93869,15 +93889,29 @@ var _VectorTile = _interopRequireDefault(require("./layer/VectorTile.js"));
 var _WebGLPoints = _interopRequireDefault(require("./layer/WebGLPoints.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./layer/Graticule.js":"node_modules/ol/layer/Graticule.js","./layer/Group.js":"node_modules/ol/layer/Group.js","./layer/Heatmap.js":"node_modules/ol/layer/Heatmap.js","./layer/Image.js":"node_modules/ol/layer/Image.js","./layer/Layer.js":"node_modules/ol/layer/Layer.js","./layer/MapboxVector.js":"node_modules/ol/layer/MapboxVector.js","./layer/Tile.js":"node_modules/ol/layer/Tile.js","./layer/Vector.js":"node_modules/ol/layer/Vector.js","./layer/VectorImage.js":"node_modules/ol/layer/VectorImage.js","./layer/VectorTile.js":"node_modules/ol/layer/VectorTile.js","./layer/WebGLPoints.js":"node_modules/ol/layer/WebGLPoints.js"}],"data/geojson.json":[function(require,module,exports) {
+},{"./layer/Graticule.js":"node_modules/ol/layer/Graticule.js","./layer/Group.js":"node_modules/ol/layer/Group.js","./layer/Heatmap.js":"node_modules/ol/layer/Heatmap.js","./layer/Image.js":"node_modules/ol/layer/Image.js","./layer/Layer.js":"node_modules/ol/layer/Layer.js","./layer/MapboxVector.js":"node_modules/ol/layer/MapboxVector.js","./layer/Tile.js":"node_modules/ol/layer/Tile.js","./layer/Vector.js":"node_modules/ol/layer/Vector.js","./layer/VectorImage.js":"node_modules/ol/layer/VectorImage.js","./layer/VectorTile.js":"node_modules/ol/layer/VectorTile.js","./layer/WebGLPoints.js":"node_modules/ol/layer/WebGLPoints.js"}],"data/meestezonneuren.json":[function(require,module,exports) {
 module.exports = {
   "type": "FeatureCollection",
+  "name": "hoi",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
   "features": [{
     "type": "Feature",
     "properties": {},
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[[4.85321044921875, 52.44261787120725], [4.7406005859375, 52.3688917060255], [5.01251220703125, 52.38565847278254], [4.91363525390625, 52.22611704066942], [5.33111572265625, 52.18403686498285], [5.2734375, 52.45600939264076], [4.85321044921875, 52.44261787120725]]]
+      "coordinates": [[[4.699464402495387, 52.934300246596308], [4.699408032477908, 52.937874926523648], [4.699351651857187, 52.941449602733158], [4.699295260630283, 52.945024275218167], [4.699238858794247, 52.948598943971582], [4.70515713310277, 52.948632867623999], [4.705101205983207, 52.952207536204412], [4.705045268339927, 52.955782201040236], [4.710964523923487, 52.955815838621596], [4.716883789942368, 52.955849182999586], [4.716828812803528, 52.959423851124491], [4.722748574686262, 52.95945690577215], [4.730641607660393, 52.959500392144179], [4.72866834682451, 52.959489667183547], [4.728614330564084, 52.963064338469728], [4.746375164457382, 52.963160873422432], [4.752295462329336, 52.963192465198929], [4.758215770002746, 52.963223763703205], [4.758267358151033, 52.959649075660018], [4.758370505328167, 52.952499688320572], [4.758422064362405, 52.948924989038005], [4.758473613697346, 52.945350286022681], [4.758525153335682, 52.941775579281504], [4.758576683280104, 52.938200868821347], [4.764493603166936, 52.938231851251011], [4.764544638428499, 52.934657133823471], [4.764595664092708, 52.931082412691204], [4.764646680162224, 52.927507687861088], [4.764697686639711, 52.923932959339901], [4.764799670829233, 52.916783491251998], [4.764850648546585, 52.913208751699038], [4.764952575239756, 52.906059261609272], [4.76500352422089, 52.902484511086236], [4.765054463628592, 52.898909756920254], [4.765105393465519, 52.895334999118177], [4.765156313734321, 52.891760237686952], [4.771066945400385, 52.89179088518177], [4.771117372292831, 52.888216116910577], [4.753386957506615, 52.888123306195439], [4.753438826079207, 52.884548544052528], [4.753490684909973, 52.88097377829996], [4.747581535490711, 52.880942116462428], [4.747633865971017, 52.877367496711805], [4.747686188765818, 52.873792727068029], [4.747738501736128, 52.870217953834604], [4.747790804884676, 52.866643177018382], [4.747843098214175, 52.863068396626289], [4.747895381727345, 52.859493612665176], [4.741989139801102, 52.859461824585182], [4.742041896484042, 52.855887040397448], [4.74209464326546, 52.85231225265386], [4.742147380148102, 52.848737461361324], [4.736242596796179, 52.848705390999626], [4.736295806491621, 52.845130599529519], [4.736349006203218, 52.841555804523644], [4.736402195933729, 52.837981005988844], [4.736455375685916, 52.834406203932062], [4.730552532601718, 52.834373854862136], [4.730659826779791, 52.827224246995236], [4.730713458776737, 52.823649437805351], [4.730767080716002, 52.820074625120334], [4.730820692600365, 52.816499808947121], [4.724920270384227, 52.816467184827687], [4.724974354105737, 52.812892368593836], [4.725028427687587, 52.80931754888492], [4.725082491132578, 52.805742725707844], [4.719183524447352, 52.805709819933156], [4.719292584078874, 52.798560170100693], [4.719347098565213, 52.7949853400088], [4.71344958667185, 52.794952152758455], [4.713504572284426, 52.791377322703859], [4.707607552036347, 52.791343847140581], [4.707663008594801, 52.787769017159633], [4.707718454762764, 52.784194183749982], [4.701822407310305, 52.784160423474049], [4.701878324156585, 52.7805855901806], [4.701934230528021, 52.777010753471671], [4.701990126427511, 52.773435913354092], [4.702101886822207, 52.766286222920392], [4.69620825426203, 52.766252188753334], [4.696264599375858, 52.762677342016687], [4.69632093393933, 52.759102491898275], [4.696377257955363, 52.755527638404985], [4.690485077508334, 52.75549332345043], [4.690541871319936, 52.751918470183604], [4.690598654500031, 52.748343613555065], [4.684707445271867, 52.748309014368147], [4.684764697980788, 52.744734158008526], [4.678873979625504, 52.744699271056334], [4.678931701683547, 52.741124415001877], [4.678989412939254, 52.737549555605149], [4.679047113395606, 52.73397469287297], [4.67910480305558, 52.730399826812267], [4.6732160152133, 52.730364663205393], [4.673274173782389, 52.726789797504829], [4.673332321471343, 52.723214928488872], [4.667444503821497, 52.723179481041136], [4.667503120153423, 52.719604612427723], [4.661615792987475, 52.71956887751881], [4.661674877783017, 52.715994009344094], [4.66173395152815, 52.712419137873447], [4.661793014225921, 52.708844263113626], [4.655907136117638, 52.708808248345989], [4.655966666926617, 52.705233374073501], [4.650081279104694, 52.70519707202731], [4.650201265369467, 52.698047321259502], [4.644316846798001, 52.698010735825399], [4.644377301988277, 52.694435859372426], [4.644437745877945, 52.690860979662844], [4.638554296275982, 52.69082411096128], [4.638615207566847, 52.687249231859766], [4.638676107473898, 52.683674349514774], [4.63873699600027, 52.680099463933146], [4.632854993603617, 52.680062315971504], [4.632916349179768, 52.676487431046532], [4.627034836674198, 52.676449996171129], [4.627096659121372, 52.672875111938765], [4.627158470018602, 52.669300224489156], [4.621277925640045, 52.669262506707319], [4.62121563650054, 52.672837390211029], [4.621153335721754, 52.676412270496847], [4.621091023300482, 52.679987147557839], [4.621028699233515, 52.68356202138721], [4.620966363517643, 52.687136891978035], [4.620904016149651, 52.690711759323456], [4.626787431322375, 52.690749500790403], [4.626725551077707, 52.694324368833314], [4.626663659263981, 52.697899233617683], [4.626601755878001, 52.701474095136682], [4.62653984091658, 52.705048953383404], [4.62623009236605, 52.722923195292459], [4.63211783136473, 52.722960681135774], [4.632056326471652, 52.726535523529641], [4.631994810070467, 52.730110362603732], [4.631933282157997, 52.733685198351232], [4.631871742731064, 52.737260030765242], [4.63181019178649, 52.740834859838863], [4.631748629321095, 52.744409685565294], [4.637639258718385, 52.744446903589861], [4.637578164858867, 52.74802172986054], [4.63745594282469, 52.755171372314031], [4.637394814643714, 52.758746188483059], [4.643287376546558, 52.758783130602986], [4.643226717411389, 52.762357947261499], [4.649119771166855, 52.762394601718057], [4.649059581257382, 52.765969418829876], [4.648939167615821, 52.773119042866227], [4.648878943877503, 52.776693849777018], [4.654773931798306, 52.776730227942302], [4.65471417772638, 52.780305035251537], [4.654654412458902, 52.78387983914044], [4.660550373566241, 52.783915933211858], [4.66043177178678, 52.791065538268114], [4.660372454226574, 52.794640335639201], [4.660313125548618, 52.79821512956309], [4.666211022846443, 52.798250946928022], [4.666152164543618, 52.801825741152889], [4.666093295207127, 52.805400531917435], [4.671992166623804, 52.805436064887843], [4.6719337679301, 52.809010855910863], [4.671875358286916, 52.812585643460466], [4.671816937691226, 52.816160427529688], [4.671758506139997, 52.819735208111751], [4.671700063630199, 52.8233099851997], [4.677601355309074, 52.823345244745283], [4.677543383971885, 52.826920022030407], [4.677485401760476, 52.830494795808349], [4.677427408671837, 52.834069566072195], [4.683330157904837, 52.834104544561526], [4.683272636344492, 52.837679314973705], [4.683215103991382, 52.841254081858644], [4.68315756084252, 52.844828845209541], [4.683100006894922, 52.848403605019477], [4.689004697106806, 52.848438305913469], [4.6889476151311, 52.852013065816543], [4.688890522441267, 52.855587822165596], [4.688833419034336, 52.859162574953594], [4.694739568558954, 52.859196994403348], [4.694682937480395, 52.862771747235691], [4.694626295769469, 52.866346496493925], [4.69456964342323, 52.869921242171131], [4.694512980438732, 52.873495984260522], [4.694456306813033, 52.877070722755214], [4.694399622543179, 52.880645457648257], [4.694342927626221, 52.884220188932893], [4.700252471044805, 52.884254341094888], [4.70019624916437, 52.887829072349717], [4.700140016721774, 52.891403799982974], [4.700083773714089, 52.894978523987746], [4.700027520138386, 52.898553244357146], [4.699971255991739, 52.902127961084346], [4.699914981271212, 52.90570267416247], [4.699858695973876, 52.909277383584609], [4.705771637686809, 52.909311268056712], [4.705715826135669, 52.912885977374977], [4.705660004092874, 52.916460683024184], [4.705604171555515, 52.920035384997398], [4.705548328520677, 52.923610083287741], [4.699633448957772, 52.923576184576405], [4.699577110732379, 52.927150875615823], [4.699464402495387, 52.934300246596308]], [[4.758576683280104, 52.938200868821347], [4.75867971409796, 52.931051436771384], [4.758628203533299, 52.934626154648981], [4.758576683280104, 52.938200868821347]]]
+    }
+  }, {
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[4.761878016056312, 53.120537366754306], [4.761826478039144, 53.124111882076114], [4.767768753510135, 53.124142739849354], [4.767819801756406, 53.120568221275427], [4.767870840358029, 53.11699369864035], [4.767921869317688, 53.113419171951001], [4.767972888638074, 53.109844641214266], [4.768023898321872, 53.106270106437037], [4.768125888790446, 53.099121024788346], [4.768176869580588, 53.095546477930654], [4.768278802286, 53.088397372182847], [4.768329754206627, 53.084822813306488], [4.774266656899421, 53.084853341009904], [4.774317110444867, 53.081278774925828], [4.77436755446741, 53.077704204856587], [4.7744179889697, 53.074129630809153], [4.77446841395439, 53.07055505279029], [4.774518829424126, 53.066980470806932], [4.774569235381565, 53.063405884865929], [4.774619631829344, 53.05983129497411], [4.774670018770117, 53.056256701138338], [4.774720396206527, 53.052682103365562], [4.774770764141216, 53.049107501662547], [4.774821122576839, 53.045532896036171], [4.774871471516024, 53.041958286493347], [4.774921810961422, 53.038383673040855], [4.774972140915674, 53.034809055685656], [4.775022461381415, 53.031234434434552], [4.775072772361288, 53.027659809294413], [4.775123073857928, 53.024085180272102], [4.775173365873976, 53.020510547374506], [4.775223648412064, 53.016935910608446], [4.77527392147483, 53.013361269980855], [4.775324185064905, 53.009786625498521], [4.775374439184924, 53.006211977168356], [4.781300619948423, 53.006242140612358], [4.781350377864141, 53.002667485268418], [4.775424683837522, 53.002637324997217], [4.769498999275695, 53.002606871110494], [4.763573324270328, 53.002576123609209], [4.763522106151893, 53.006150769342248], [4.763470878382651, 53.009725411233248], [4.757544239475901, 53.009694363587201], [4.757595954065742, 53.00611972496214], [4.751669811722088, 53.006088386938529], [4.751722003295637, 53.002513747767132], [4.751774185037733, 52.998939104759451], [4.757699354020644, 52.998970436191073], [4.757751039391118, 52.995395786058793], [4.751826356951108, 52.995364457922371], [4.745901684337085, 52.99533283623613], [4.739977021640667, 52.995300921001082], [4.734052368953456, 52.995268712218248], [4.728127726367069, 52.995236209888681], [4.72220309397311, 52.995203414013403], [4.722148489386704, 52.998778043911621], [4.716223380750649, 52.998744951011247], [4.716168279259583, 53.002319573596374], [4.710242694387175, 53.002286183609698], [4.710187095808161, 53.005860798842775], [4.704261034705195, 53.005827111708591], [4.69833498416989, 53.005793130940269], [4.698278401527222, 53.009367735207704], [4.698165204252025, 53.01651693217044], [4.69810858961356, 53.020091524852042], [4.698051964303898, 53.023666113657896], [4.697995328320069, 53.027240698581238], [4.703924300985666, 53.027274700806785], [4.703868141667679, 53.030849285418952], [4.70381197176145, 53.034423866135413], [4.703755791264026, 53.037998442949331], [4.703699600172462, 53.041573015853835], [4.703643398483816, 53.045147584842056], [4.709574819383176, 53.045181310990685], [4.709519094899965, 53.048755879605984], [4.709463359905756, 53.052330444291862], [4.709407614397623, 53.055905005041446], [4.715340509506243, 53.055938447774679], [4.715285241565699, 53.059513008102151], [4.71522996319744, 53.063087564480192], [4.715174674398566, 53.066662116901902], [4.721109044470245, 53.066695276038217], [4.721054233601464, 53.070269827988568], [4.720999412388401, 53.073844375969458], [4.726934769626618, 53.073877247865113], [4.726880426617198, 53.07745179533169], [4.72682607334993, 53.081026338815676], [4.732762418042663, 53.081058923347982], [4.73270854325277, 53.084633466274624], [4.732654658291557, 53.088208005205509], [4.738591990726857, 53.088240302251762], [4.73853858451693, 53.091814840582281], [4.738485168222317, 53.09538937490381], [4.738431741840208, 53.098963905209544], [4.744370551419054, 53.098995918019384], [4.744317604151862, 53.10257044767544], [4.750256912936676, 53.102602169381193], [4.750204444969138, 53.106176698350723], [4.750151967090478, 53.109751223285016], [4.756092264482366, 53.109782657136194], [4.756040266177807, 53.113357181340874], [4.755988258049059, 53.116931701497059], [4.755936240093378, 53.120506217597949], [4.761878016056312, 53.120537366754306]]]
     }
   }]
 };
@@ -93907,12 +93941,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var styles = {
   'Polygon': new _style.Style({
     stroke: new _style.Stroke({
-      color: 'blue',
+      color: 'rgba(255, 131, 0, 1)',
       lineDash: [5],
       width: 3
     }),
     fill: new _style.Fill({
-      color: 'rgba(0, 0, 255, 0.1)'
+      color: 'rgba(254, 185, 144, 0.3)'
     })
   })
 };
@@ -93921,7 +93955,7 @@ var styleFunction = function styleFunction(feature) {
   return styles[feature.getGeometry().getType()];
 };
 
-var data = require('/data/geojson.json');
+var data = require('/data/meestezonneuren.json');
 
 var geojsonObject = data;
 var vectorSource = new _source.Vector({
@@ -93972,7 +94006,7 @@ var map = new _Map.default({
     zoom: 7.4
   })
 }); // map.addControl(new ol.control.LayerSwitcher());
-},{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","ol/control":"node_modules/ol/control.js","/data/geojson.json":"data/geojson.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"ol/ol.css":"node_modules/ol/ol.css","ol/format/GeoJSON":"node_modules/ol/format/GeoJSON.js","ol/Map":"node_modules/ol/Map.js","ol/View":"node_modules/ol/View.js","ol/style":"node_modules/ol/style.js","ol/source":"node_modules/ol/source.js","ol/layer":"node_modules/ol/layer.js","ol/source/TileWMS":"node_modules/ol/source/TileWMS.js","ol/control":"node_modules/ol/control.js","/data/meestezonneuren.json":"data/meestezonneuren.json"}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -94000,7 +94034,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55177" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50412" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -94176,5 +94210,144 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js":[function(require,module,exports) {
+var getBundleURL = require('./bundle-url').getBundleURL;
+
+function loadBundlesLazy(bundles) {
+  if (!Array.isArray(bundles)) {
+    bundles = [bundles];
+  }
+
+  var id = bundles[bundles.length - 1];
+
+  try {
+    return Promise.resolve(require(id));
+  } catch (err) {
+    if (err.code === 'MODULE_NOT_FOUND') {
+      return new LazyPromise(function (resolve, reject) {
+        loadBundles(bundles.slice(0, -1)).then(function () {
+          return require(id);
+        }).then(resolve, reject);
+      });
+    }
+
+    throw err;
+  }
+}
+
+function loadBundles(bundles) {
+  return Promise.all(bundles.map(loadBundle));
+}
+
+var bundleLoaders = {};
+
+function registerBundleLoader(type, loader) {
+  bundleLoaders[type] = loader;
+}
+
+module.exports = exports = loadBundlesLazy;
+exports.load = loadBundles;
+exports.register = registerBundleLoader;
+var bundles = {};
+
+function loadBundle(bundle) {
+  var id;
+
+  if (Array.isArray(bundle)) {
+    id = bundle[1];
+    bundle = bundle[0];
+  }
+
+  if (bundles[bundle]) {
+    return bundles[bundle];
+  }
+
+  var type = (bundle.substring(bundle.lastIndexOf('.') + 1, bundle.length) || bundle).toLowerCase();
+  var bundleLoader = bundleLoaders[type];
+
+  if (bundleLoader) {
+    return bundles[bundle] = bundleLoader(getBundleURL() + bundle).then(function (resolved) {
+      if (resolved) {
+        module.bundle.register(id, resolved);
+      }
+
+      return resolved;
+    }).catch(function (e) {
+      delete bundles[bundle];
+      throw e;
+    });
+  }
+}
+
+function LazyPromise(executor) {
+  this.executor = executor;
+  this.promise = null;
+}
+
+LazyPromise.prototype.then = function (onSuccess, onError) {
+  if (this.promise === null) this.promise = new Promise(this.executor);
+  return this.promise.then(onSuccess, onError);
+};
+
+LazyPromise.prototype.catch = function (onError) {
+  if (this.promise === null) this.promise = new Promise(this.executor);
+  return this.promise.catch(onError);
+};
+},{"./bundle-url":"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js":[function(require,module,exports) {
+module.exports = function loadJSBundle(bundle) {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
+    script.async = true;
+    script.type = 'text/javascript';
+    script.charset = 'utf-8';
+    script.src = bundle;
+
+    script.onerror = function (e) {
+      script.onerror = script.onload = null;
+      reject(e);
+    };
+
+    script.onload = function () {
+      script.onerror = script.onload = null;
+      resolve();
+    };
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+  });
+};
+},{}],0:[function(require,module,exports) {
+var b=require("../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([]).then(function(){require("js/index.js");});
+},{}]},{},["../../../../../opt/homebrew/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/js.00a46daa.js.map
